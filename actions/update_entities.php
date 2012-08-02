@@ -63,14 +63,22 @@
 							// move all the subpages to the new container
 							entity_tools_update_subpages_container_guid($entity);
 						}
+						
+						// check access_id for the new container
+						entity_tools_update_access_id($entity, $old_container_guid);
 					} elseif(($old_container_guid == $old_owner_guid) && ($new_owner_guid != $old_owner_guid)){
 						// moved the entity to a different user, so also change container to this user
 						$entity->container_guid = $new_owner_guid;
+						
+						$update_needed = true;
 						
 						if($subtype == "page_top"){
 							// move all the subpages to the new container
 							entity_tools_update_subpages_container_guid($entity);
 						}
+						
+						// check access_id for the new container
+						entity_tools_update_access_id($entity, $old_container_guid);
 					}
 					
 					// update the entity?

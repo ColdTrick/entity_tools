@@ -269,8 +269,13 @@
 		if(!empty($object) && elgg_instanceof($object, "object", "page_top")){
 			if($subpages = entity_tools_get_subpages($object)){
 				foreach($subpages as $subpage){
+					$old_container_guid = $subpage->getContainerGUID();
+					
 					// change container
 					$subpage->container_guid = $object->getContainerGUID();
+					
+					// check if the access need to be updated
+					entity_tools_update_access_id($subpage, $old_container_guid);
 					
 					// save entity
 					$subpage->save();
@@ -278,3 +283,52 @@
 			}
 		}
 	}
+	
+	function entity_tools_update_access_id(ElggEntity &$entity, $old_container_guid){
+		
+		if(!empty($entity) && !empty($old_container_guid)){
+			$access_id = $entity->access_id;
+			
+			$old_container = get_entity($old_container_guid);
+			$new_container = $entity->getContainerEntity();
+			
+			// check the old container to check access_id
+			if(elgg_instanceof($old_container, "group")){
+				// from a group
+				if($access_id == $old_container->group_acl){
+					// with group access
+					if(elgg_instanceof($new_container, "group")){
+						// to a new group
+						// change access to the new group
+						$entity->access_id = $new_container->group_acl;
+					} else {
+						// new container is a user, so make the entity private
+						$entity->access_id = ACCESS_PRIVATE;
+					}
+				}
+			} else {
+				// from a user
+				$acls = array();
+				
+				if($user_access_collections = get_user_access_collections($old_container_guid)){
+					foreach($user_access_collections as $acl){
+						$acls[] = $acl->id;
+					}
+				}
+				
+				if(in_array($access_id, $acls)){
+					// access was a private access collection
+					if(elgg_instanceof($new_container, "group")){
+						// moved to a group
+						// change access to the group
+						$entity->access_id = $new_container->group_acl;
+					} else {
+						// moved to different user
+						// change access to private
+						$entity->access_id = ACCESS_PRIVATE;
+					}
+				}
+			}
+		}
+	}
+	
