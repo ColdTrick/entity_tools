@@ -28,6 +28,14 @@
 		'entity_tools:settings:edit_access:admin' => "Only site administrators",
 		'entity_tools:settings:edit_access:user' => "All users",
 		
+		// notifications
+		'entity_tools:notify:transfer_owner:subject' => "A %s has been transfered to you",
+		'entity_tools:notify:transfer_owner:message' => "Dear %s
+
+%s transfered a %s with the title '%s' to you.
+
+You can view it here: %s",
+		
 		// actions
 		// update entities
 		'entity_tools:action:update_entities:error:input' => "Not all the required inputs were supplied, please try again",

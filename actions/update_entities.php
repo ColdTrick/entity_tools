@@ -49,6 +49,21 @@
 								break;
 						}
 						
+						// notify the new owner
+						$new_owner = get_user($new_owner_guid);
+						$old_owner = get_user($old_owner_guid);
+						
+						$subject = elgg_echo("entity_tools:notify:transfer_owner:subject", array(elgg_echo("item:" . $type . ":" . $subtype)));
+						$msg = elgg_echo("entity_tools:notify:transfer_owner:message", array(
+									$new_owner->name, 
+									$old_owner->name, 
+									elgg_echo("item:" . $type . ":" . $subtype),
+									$entity->title,
+									$entity->getURL()
+						));
+						
+						notify_user($new_owner_guid, $old_owner_guid, $subject, $msg);
+						
 						// change metadata to new owner
 						entity_tools_update_metadata_owner_guid($entity);
 					}
