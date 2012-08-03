@@ -36,13 +36,20 @@
 
 You can view it here: %s",
 		
+		// fancy dropdown labels
+		'entity_tools:dropdown:label:current_value' => "Current value",
+		'entity_tools:dropdown:label:owner' => "Current owner",
+		'entity_tools:dropdown:label:myself' => "Myself",
+		'entity_tools:dropdown:label:friends' => "My friends",
+		'entity_tools:dropdown:label:owner_groups' => "Owner groups",
+		'entity_tools:dropdown:label:my_groups' => "My groups",
+		 
 		// actions
 		// update entities
 		'entity_tools:action:update_entities:error:input' => "Not all the required inputs were supplied, please try again",
 		'entity_tools:action:update_entities:error:not_all' => "Not all entities could be updated (%s of %s succeeded)",
 		'entity_tools:action:update_entities:success' => "Successfully edited %s entities",
-		'' => "",
-	
+		
 	);
 	
 	add_translation("en", $english);
