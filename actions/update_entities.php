@@ -47,6 +47,10 @@
 							case "page_top":
 								entity_tools_update_subpages_owner_guid($entity, $old_owner_guid);
 								break;
+							case "file":
+								// move the physical file(s)
+								entity_tools_move_file(get_entity($entity->getGUID()), $new_owner_guid); 
+								break;
 						}
 						
 						// notify the new owner

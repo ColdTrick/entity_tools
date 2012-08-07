@@ -4,7 +4,8 @@
 		$result = array(
 			"object" => array(
 				"blog",
-				"page_top"
+				"page_top",
+				"file"
 			)
 		);
 		
@@ -378,6 +379,55 @@
 						// moved to different user
 						// change access to private
 						$entity->access_id = ACCESS_PRIVATE;
+					}
+				}
+			}
+		}
+	}
+	
+	function entity_tools_move_file(ElggFile $old_entity, $new_owner_guid){
+		
+		if(!empty($old_entity) && elgg_instanceof($old_entity, "object", "file") && !empty($new_owner_guid)){
+			
+			// make temp file handlers
+			$tmp_fh = new ElggFile();
+			$tmp_fh->owner_guid = $new_owner_guid;
+			
+			$tmp_fh_old = new ElggFile();
+			$tmp_fh_old->owner_guid = $old_entity->getOwnerGUID();
+			
+			// check main file
+			$tmp_fh_old->setFilename($old_entity->getFilename());
+			
+			// move the main file
+			if($tmp_fh_old->exists()){
+				$tmp_fh->setFilename($tmp_fh_old->getFilename());
+				
+				// copy the main file to the new location
+				$tmp_fh->open("write");
+				$tmp_fh->write($tmp_fh_old->grabFile());
+				$tmp_fh->close();
+				
+				// remove old file
+				$tmp_fh_old->delete();
+			}
+			
+			// check for thumbs and move
+			$thumbs = array("thumbnail", "smallthumb", "largethumb");
+			foreach($thumbs as $thumb){
+				if($filename = $old_entity->$thumb){
+					$tmp_fh_old->setFilename($filename);
+					
+					if($tmp_fh_old->exists()){
+						$tmp_fh->setFilename($filename);
+						
+						// copy the thumb to the new location
+						$tmp_fh->open("write");
+						$tmp_fh->write($tmp_fh_old->grabFile());
+						$tmp_fh->close();
+						
+						// remove old thumb
+						$tmp_fh_old->delete();
 					}
 				}
 			}
