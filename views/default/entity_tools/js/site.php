@@ -12,6 +12,7 @@ elgg.thewire_tools.init = function(){
 			timeFormat: 'hh:mm',
 			ampm: false,
 			maxDate: 0,
+			hideIfNoPrevNext: true,
 			onSelect: function(dateText) {
 				if ($(this).is('.elgg-input-timestamp')) {
 					// convert to unix timestamp
