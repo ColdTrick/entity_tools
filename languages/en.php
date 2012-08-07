@@ -20,9 +20,6 @@
 		'entity_tools:forms:owner_listing:description' => "Here you can edit some of the properties of you content. The column Created allows you to edit when an item was created. The column Owner allows you to transfer an item to one of your friends. The last column (Group / User) shows where the content is located, eighter in a group or in your personal listing and it allows you to change this.",
 		'entity_tools:forms:owner_listing:disclaimer' => "Please note that when assigning content to a group with a *, the current owner is not a member of that group and therefor can't access the content.",
 		
-		'entity_tools:listing:wrapper:page_top:header' => "Subpages*",
-		'entity_tools:listing:wrapper:page_top:description' => "*: when transfering the page to a new owner, should all the subpages be transfered as well?",
-		
 		// settings
 		'entity_tools:settings:edit_access' => "Who can manage content",
 		'entity_tools:settings:edit_access:admin' => "Only site administrators",
