@@ -17,7 +17,7 @@
 	echo elgg_view("input/hidden", array("name" => "type", "value" => $type));
 	echo elgg_view("input/hidden", array("name" => "subtype", "value" => $subtype));
 	echo elgg_view("input/submit", array("value" => elgg_echo("save")));
-	echo elgg_view("input/reset", array("value" => elgg_echo("cancel")));
+	echo elgg_view("input/reset", array("value" => elgg_echo("reset")));
 	echo "</div>";
 	
 	if(elgg_get_page_owner_guid() != elgg_get_logged_in_user_guid()){
