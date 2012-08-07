@@ -16,7 +16,7 @@
 	echo elgg_view("input/hidden", array("name" => "owner_guid", "value" => $owner->getGUID()));
 	echo elgg_view("input/hidden", array("name" => "type", "value" => $type));
 	echo elgg_view("input/hidden", array("name" => "subtype", "value" => $subtype));
-	echo elgg_view("input/submit", array("value" => elgg_echo("save")));
+	echo elgg_view("input/submit", array("value" => elgg_echo("save"), "class" => "elgg-button-submit elgg-requires-confirmation"));
 	echo elgg_view("input/reset", array("value" => elgg_echo("reset")));
 	echo "</div>";
 	
