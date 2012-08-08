@@ -3,6 +3,7 @@ x.x:
 
 - fixed: wrong container_guid in some cases
 - fixed: last pages revision is correctly updated now
+- updated: better success/error messages to the user
 
 1.0 (2012-08-07):
 

@@ -26,7 +26,7 @@ Je kunt het hier bekijken: %s',
   'entity_tools:dropdown:label:owner_groups' => 'Groepen van de eigenaar',
   'entity_tools:dropdown:label:my_groups' => 'Mijn groepen',
   'entity_tools:action:update_entities:error:input' => 'Niet alle vereiste velden zijn ingevuld, probeer het nognaals',
-  'entity_tools:action:update_entities:error:not_all' => 'Niet alle item konden worden bijgewerkt (%s van de %s gelukt)',
+  'entity_tools:action:update_entities:error:not_all' => 'Niet alle item konden worden bijgewerkt (%s gelukt, %s mislukt)',
   'entity_tools:action:update_entities:success' => 'Succesvol %s items aangepast.',
 );
 add_translation("nl", $language);

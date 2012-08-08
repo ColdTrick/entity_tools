@@ -7,7 +7,8 @@
 	$params = get_input("params");
 	
 	if(!empty($type) && !empty($subtype) && !empty($owner_guid) && !empty($params) && is_array($params)){
-		$success_count = 0;
+		$update_count = 0;
+		$error_count = 0;
 		
 		foreach($params as $guid => $options){
 			// get the entity, and check if we can update the entity
@@ -110,18 +111,24 @@
 					if($update_needed){
 						// save the entity
 						$entity->save();
+						
+						// keep count
+						$update_count++;
 					}
 					
-					// keep count
-					$success_count++;
+					
+				} else {
+					$error_count++;
 				}
+			} else {
+				$error_count++;
 			}
 		}
 		
-		if(count($params) == $success_count){
-			system_message(elgg_echo("entity_tools:action:update_entities:success", array($success_count)));
+		if(empty($error_count)){
+			system_message(elgg_echo("entity_tools:action:update_entities:success", array($update_count)));
 		} else {
-			register_error(elgg_echo("entity_tools:action:update_entities:error:not_all", array($success_count, count($params))));
+			register_error(elgg_echo("entity_tools:action:update_entities:error:not_all", array($update_count, $error_count)));
 		}
 	} else {
 		register_error(elgg_echo("entity_tools:action:update_entities:error:input"));

@@ -44,8 +44,8 @@ You can view it here: %s",
 		// actions
 		// update entities
 		'entity_tools:action:update_entities:error:input' => "Not all the required inputs were supplied, please try again",
-		'entity_tools:action:update_entities:error:not_all' => "Not all entities could be updated (%s of %s succeeded)",
-		'entity_tools:action:update_entities:success' => "Successfully edited %s entities",
+		'entity_tools:action:update_entities:error:not_all' => "Not all entities could be updated (%s succeeded, %s failed)",
+		'entity_tools:action:update_entities:success' => "Successfully updated %s entities",
 		
 	);
 	
