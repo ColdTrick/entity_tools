@@ -1,4 +1,7 @@
 = Version History =
+x.x:
+
+- fixed: wrong container_guid in some cases
 
 1.0 (2012-08-07):
 

@@ -73,7 +73,8 @@
 					}
 					
 					// check for container_guid
-					if($new_container_guid != $old_container_guid){
+					if(($new_container_guid != $old_container_guid) && (!get_user($new_container_guid) || (get_user($new_container_guid) && ($new_container_guid == $entity->getOwnerGUID())))){
+						// the new container is not a user or the owner
 						$entity->container_guid = $new_container_guid;
 						
 						$update_needed = true;
@@ -85,7 +86,7 @@
 						
 						// check access_id for the new container
 						entity_tools_update_access_id($entity, $old_container_guid);
-					} elseif(($old_container_guid == $old_owner_guid) && ($new_owner_guid != $old_owner_guid)){
+					} elseif(($new_owner_guid != $old_owner_guid) && (get_user($old_container_guid) || get_user($new_container_guid))){
 						// moved the entity to a different user, so also change container to this user
 						$entity->container_guid = $new_owner_guid;
 						
