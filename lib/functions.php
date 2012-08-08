@@ -310,6 +310,9 @@
 					// transfer all metadata to new owner
 					entity_tools_update_metadata_owner_guid($subpage);
 					
+					// check revisions
+					entitiy_tools_check_page_revision($subpage, $old_owner_guid);
+					
 					// save entity
 					$subpage->save();
 				}
@@ -429,6 +432,23 @@
 						// remove old thumb
 						$tmp_fh_old->delete();
 					}
+				}
+			}
+		}
+	}
+	
+	function entitiy_tools_check_page_revision(ElggObject $entity, $old_owner_guid){
+		
+		if(!empty($entity) && (elgg_instanceof($entity, "object", "page_top") || elgg_instanceof($entity, "object", "page")) && !empty($old_owner_guid)){
+			if($annotations = $entity->getAnnotations("page", 1, 0, "desc")){
+				$annotation = $annotations[0];
+				
+				// is the last revision owned by the old owner
+				if($annotation->getOwnerGUID() == $old_owner_guid){
+					// update it to the new owner
+					$annotation->owner_guid = $entity->getOwnerGUID();
+					
+					$annotation->save();
 				}
 			}
 		}
