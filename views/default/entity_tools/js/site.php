@@ -5,7 +5,7 @@
 
 elgg.provide("elgg.entity_tools");
 
-elgg.thewire_tools.init = function(){
+elgg.entity_tools.init = function(){
 	if($('.elgg-input-datetime').length){
 		$('.elgg-input-datetime').datetimepicker({
 			dateFormat: 'yy-mm-dd',
@@ -30,6 +30,6 @@ elgg.thewire_tools.init = function(){
 			}
 		});
 	}
-}
+};
 
-elgg.register_hook_handler("init", "system", elgg.thewire_tools.init);
+elgg.register_hook_handler("init", "system", elgg.entity_tools.init);
