@@ -1,5 +1,5 @@
 = Version History =
-x.x:
+1.0.1 (2013-04-05):
 
 - fixed: wrong container_guid in some cases
 - fixed: last pages revision is correctly updated now
