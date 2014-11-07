@@ -55,7 +55,7 @@
 								break;
 							case "file":
 								// move the physical file(s)
-								entity_tools_move_file(get_entity($entity->getGUID()), $new_owner_guid); 
+								entity_tools_move_file(get_entity($entity->getGUID()), $new_owner_guid);
 								break;
 						}
 						
@@ -65,8 +65,8 @@
 						
 						$subject = elgg_echo("entity_tools:notify:transfer_owner:subject", array(elgg_echo("item:" . $type . ":" . $subtype)));
 						$msg = elgg_echo("entity_tools:notify:transfer_owner:message", array(
-									$new_owner->name, 
-									$old_owner->name, 
+									$new_owner->name,
+									$old_owner->name,
 									elgg_echo("item:" . $type . ":" . $subtype),
 									$entity->title,
 									$entity->getURL()
@@ -88,6 +88,8 @@
 						if($subtype == "page_top"){
 							// move all the subpages to the new container
 							entity_tools_update_subpages_container_guid($entity);
+						} elseif ($subtype == "question") {
+							entity_tools_update_answers_access($entity);
 						}
 						
 						// check access_id for the new container
