@@ -312,7 +312,7 @@
 					entity_tools_update_metadata_owner_guid($subpage);
 					
 					// check revisions
-					entitiy_tools_check_page_revision($subpage, $old_owner_guid);
+					entity_tools_check_page_revision($subpage, $old_owner_guid);
 					
 					// save entity
 					$subpage->save();
@@ -438,7 +438,7 @@
 		}
 	}
 	
-	function entitiy_tools_check_page_revision(ElggObject $entity, $old_owner_guid){
+	function entity_tools_check_page_revision(ElggObject $entity, $old_owner_guid){
 		
 		if(!empty($entity) && (elgg_instanceof($entity, "object", "page_top") || elgg_instanceof($entity, "object", "page")) && !empty($old_owner_guid)){
 			if($annotations = $entity->getAnnotations("page", 1, 0, "desc")){

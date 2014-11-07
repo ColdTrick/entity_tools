@@ -48,7 +48,7 @@
 							case "page_top":
 								
 								// make sure the rlast revision is correct
-								entitiy_tools_check_page_revision($entity, $old_owner_guid);
+								entity_tools_check_page_revision($entity, $old_owner_guid);
 								
 								// move all subpages by the same user
 								entity_tools_update_subpages_owner_guid($entity, $old_owner_guid);
