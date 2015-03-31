@@ -1,5 +1,5 @@
 <?php
-return array (
+return array(
   'entity_tools:created' => 'Aangemaakt',
   'entity_tools:owner' => 'Eigenaar',
   'entity_tools:container' => 'Groep / Gebruiker',

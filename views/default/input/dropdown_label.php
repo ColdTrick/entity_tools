@@ -45,7 +45,7 @@ unset($vars["value"]);
 <select <?php echo elgg_format_attributes($vars); ?>>
 <?php
 
-if ($options_values) {
+if (!empty($options_values) && is_array($options_values)) {
 	foreach ($options_values as $opt_value => $option) {
 
 		if (is_array($option)) {
@@ -72,16 +72,14 @@ if ($options_values) {
 			echo "<option $option_attrs>$option</option>";
 		}
 	}
-} else {
-	if (is_array($options)) {
-		foreach ($options as $option) {
+} elseif (!empty($options) && is_array($options)) {
+	foreach ($options as $option) {
 
-			$option_attrs = elgg_format_attributes(array(
-				"selected" => (string)$option == (string)$value
-			));
+		$option_attrs = elgg_format_attributes(array(
+			"selected" => (string)$option == (string)$value
+		));
 
-			echo "<option $option_attrs>$option</option>";
-		}
+		echo "<option $option_attrs>$option</option>";
 	}
 }
 ?>

@@ -34,5 +34,5 @@ function entity_tools_init() {
 	elgg_register_plugin_hook_handler("prepare", "menu:filter", "entity_tools_filter_menu_prepare_hook");
 	
 	// register actions
-	elgg_register_action("entity_tools/update_entities", dirname(__FILE__) .  "/actions/update_entities.php");
+	elgg_register_action("entity_tools/update_entities", dirname(__FILE__) . "/actions/update_entities.php");
 }

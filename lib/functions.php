@@ -240,7 +240,7 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 			$result[elgg_echo("entity_tools:dropdown:label:my_groups")] = array();
 			
 			foreach ($user_groups as $group) {
-				if(in_array($group->getGUID(), $temp_array)) {
+				if (in_array($group->getGUID(), $temp_array)) {
 					continue;
 				}
 				
@@ -278,7 +278,7 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 function entity_tools_get_subpages(ElggObject $object, $owner_guid = 0) {
 	$result = array();
 	
-	if(empty($object) || (!elgg_instanceof($object, "object", "page") && !elgg_instanceof($object, "object", "page_top"))) {
+	if (empty($object) || (!elgg_instanceof($object, "object", "page") && !elgg_instanceof($object, "object", "page_top"))) {
 		return $result;
 	}
 	
@@ -460,13 +460,12 @@ function entity_tools_update_subpages_owner_guid(ElggObject $object, $old_owner_
  * Update the container of all sub pages
  *
  * @param ElggObject $object         the page_top to update all subpages for
- * @param int        $old_owner_guid the old owner_guid
  *
  * @return void
  */
 function entity_tools_update_subpages_container_guid(ElggObject $object) {
 	
-	if(empty($object) || !elgg_instanceof($object, "object", "page_top")) {
+	if (empty($object) || !elgg_instanceof($object, "object", "page_top")) {
 		return;
 	}
 	
@@ -499,7 +498,7 @@ function entity_tools_update_subpages_container_guid(ElggObject $object) {
  */
 function entity_tools_update_access_id(ElggEntity &$entity, $old_container_guid) {
 	
-	if(empty($entity) || !elgg_instanceof($entity)) {
+	if (empty($entity) || !elgg_instanceof($entity)) {
 		return;
 	}
 	
@@ -572,7 +571,7 @@ function entity_tools_update_access_id(ElggEntity &$entity, $old_container_guid)
  */
 function entity_tools_move_file(ElggFile $old_entity, $new_owner_guid) {
 	
-	if(empty($old_entity) || !elgg_instanceof($old_entity, "object", "file")) {
+	if (empty($old_entity) || !elgg_instanceof($old_entity, "object", "file")) {
 		return;
 	}
 	
@@ -639,7 +638,7 @@ function entity_tools_move_file(ElggFile $old_entity, $new_owner_guid) {
  */
 function entity_tools_check_page_revision(ElggObject $entity, $old_owner_guid) {
 	
-	if(empty($entity) || (!elgg_instanceof($entity, "object", "page_top") && !elgg_instanceof($entity, "object", "page"))){
+	if (empty($entity) || (!elgg_instanceof($entity, "object", "page_top") && !elgg_instanceof($entity, "object", "page"))) {
 		return;
 	}
 	

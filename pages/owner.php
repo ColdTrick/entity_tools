@@ -54,7 +54,7 @@ if (!$valid_subtype) {
 	forward(REFERER);
 }
 	
-$title_text = elgg_echo("entity_tools:page:owner:title", array($page_owner->name, elgg_echo("item:" . $type .":" . $subtype)));
+$title_text = elgg_echo("entity_tools:page:owner:title", array($page_owner->name, elgg_echo("item:" . $type . ":" . $subtype)));
 
 $options = array(
 	"type" => $type,

@@ -75,7 +75,7 @@ function entity_tools_filter_menu_hook($hook, $type, $return_value, $params) {
  *
  * @return ElggMenuItem[]
  */
-function entity_tools_filter_menu_prepare_hook($hook, $type, $return_value, $params){
+function entity_tools_filter_menu_prepare_hook($hook, $type, $return_value, $params) {
 	
 	if (!elgg_in_context("entities")) {
 		return $return_value;
@@ -113,7 +113,7 @@ function entity_tools_filter_menu_prepare_hook($hook, $type, $return_value, $par
  *
  * @return ElggMenuItem[]
  */
-function entity_tools_user_hover_menu_hook($hook, $type, $return_value, $params){
+function entity_tools_user_hover_menu_hook($hook, $type, $return_value, $params) {
 	
 	if (!elgg_is_admin_logged_in()) {
 		return $return_value;
@@ -150,14 +150,14 @@ function entity_tools_user_hover_menu_hook($hook, $type, $return_value, $params)
  *
  * @return ElggMenuItem[]
  */
-function entity_tools_owner_block_menu_hook($hook, $type, $return_value, $params){
+function entity_tools_owner_block_menu_hook($hook, $type, $return_value, $params) {
 	
 	$loggedin_user = elgg_get_logged_in_user_entity();
 	if (empty($loggedin_user)) {
 		return $return_value;
 	}
 	
-	if(empty($params) || !is_array($params)) {
+	if (empty($params) || !is_array($params)) {
 		return $return_value;
 	}
 	
