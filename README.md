@@ -1,18 +1,17 @@
 Entity Tools
 ============
 
+[![Build Status](https://scrutinizer-ci.com/g/ColdTrick/entity_tools/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ColdTrick/entity_tools/build-status/master)
+
 Do advanced editing of the entities in your Elgg database
 
-Contents
---------
 1. Features
-2. ToDo
-
-### 1. Features
-- support for Blogs and Pages
+-----------
+- support for:
+	- Blogs
+	- Pages
+	- File
+	- Questions
 - backdate entities
 - change owner
 - change container (from/to personal/group)
-
-### 2. ToDo
-- add support for more subtypes

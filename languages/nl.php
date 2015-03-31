@@ -1,5 +1,5 @@
 <?php
-$language = array (
+return array (
   'entity_tools:created' => 'Aangemaakt',
   'entity_tools:owner' => 'Eigenaar',
   'entity_tools:container' => 'Groep / Gebruiker',
@@ -29,4 +29,3 @@ Je kunt het hier bekijken: %s',
   'entity_tools:action:update_entities:error:not_all' => 'Niet alle item konden worden bijgewerkt (%s gelukt, %s mislukt)',
   'entity_tools:action:update_entities:success' => 'Succesvol %s items aangepast.',
 );
-add_translation("nl", $language);
