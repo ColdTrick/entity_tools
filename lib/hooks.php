@@ -25,7 +25,7 @@ function entity_tools_filter_menu_hook($hook, $type, $return_value, $params) {
 	$priority = 10;
 	
 	if (elgg_instanceof($page_owner, "group")) {
-		$href_prefix = "entities/group/" . $page_owner->getGUID(). "/";
+		$href_prefix = "entities/group/" . $page_owner->getGUID() . "/";
 	} else {
 		$href_prefix = "entities/owner/" . $page_owner->username . "/";
 	}
