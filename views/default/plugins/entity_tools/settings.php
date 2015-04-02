@@ -4,6 +4,7 @@ $plugin = elgg_extract("entity", $vars);
 
 $edit_access_options = array(
 	"admin" => elgg_echo("entity_tools:settings:edit_access:admin"),
+	"group" => elgg_echo("entity_tools:settings:edit_access:group"),
 	"user" => elgg_echo("entity_tools:settings:edit_access:user")
 );
 

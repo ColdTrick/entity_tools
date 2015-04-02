@@ -4,6 +4,7 @@ Version History
 2.0:
 
 - rewrite for Elgg 1.9
+- added: support for group owners
 
 1.0.1 (2013-04-05):
 

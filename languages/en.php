@@ -13,16 +13,21 @@ return array(
 	// menu
 	'entity_tools:menu:user_hover' => "Manage content",
 	'entity_tools:menu:owner_block' => "Manage content",
+	'entity_tools:menu:owner_block:group' => "Manage group content",
 	
 	// page
 	'entity_tools:page:owner:title' => "Change %s's: %s",
+	'entity_tools:page:container:title' => "Change %s's: %s",
 	
-	'entity_tools:forms:owner_listing:description' => "Here you can edit some of the properties of you content. The column Created allows you to edit when an item was created. The column Owner allows you to transfer an item to one of your friends. The last column (Group / User) shows where the content is located, eighter in a group or in your personal listing and it allows you to change this.",
+	'entity_tools:forms:owner_listing:description' => "Here you can edit some of the properties of your content. The column Created allows you to edit when an item was created. The column Owner allows you to transfer an item to another user. The last column (Group / User) shows where the content is located, eighter in a group or in your personal listing and it allows you to change this.",
 	'entity_tools:forms:owner_listing:disclaimer' => "Please note that when assigning content to a group with a *, the current owner is not a member of that group and therefor can't access the content.",
+	
+	'entity_tools:forms:container_listing:description' => "Here you can edit some of the properties of the group content. The column Created allows you to edit when an item was created. The column Owner allows you to transfer an item to another user. The last column (Group / User) shows where the content is located, eighter in a group or in your personal listing and it allows you to change this.",
 	
 	// settings
 	'entity_tools:settings:edit_access' => "Who can manage content",
 	'entity_tools:settings:edit_access:admin' => "Only site administrators",
+	'entity_tools:settings:edit_access:group' => "Site administrators & group owners",
 	'entity_tools:settings:edit_access:user' => "All users",
 	
 	// notifications

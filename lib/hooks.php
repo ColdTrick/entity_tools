@@ -23,7 +23,12 @@ function entity_tools_filter_menu_hook($hook, $type, $return_value, $params) {
 	
 	$page_owner = elgg_get_page_owner_entity();
 	$priority = 10;
-	$href_prefix = "entities/owner/" . $page_owner->username . "/";
+	
+	if (elgg_instanceof($page_owner, "group")) {
+		$href_prefix = "entities/group/" . $page_owner->getGUID(). "/";
+	} else {
+		$href_prefix = "entities/owner/" . $page_owner->username . "/";
+	}
 	
 	$types = entity_tools_get_suported_entity_types();
 	if (empty($types)) {
@@ -161,24 +166,34 @@ function entity_tools_owner_block_menu_hook($hook, $type, $return_value, $params
 		return $return_value;
 	}
 	
-	$user = elgg_extract("entity", $params);
-	if (empty($user) || !elgg_instanceof($user, "user")) {
+	$owner = elgg_extract("entity", $params);
+	if (empty($owner) || (!elgg_instanceof($owner, "user") && !elgg_instanceof($owner, "group"))) {
 		return $return_value;
 	}
 	
-	// depending on the plugin setting a user can go to the edit page
-	if ($loggedin_user->getGUID() != $user->getGUID()) {
-		return $return_value;
-	}
-	
-	if ((entity_tools_get_edit_access_setting() == "user") || $user->isAdmin()) {
+	if (elgg_instanceof($owner, "user") && (entity_tools_get_edit_access_setting() == "user")) {
+		// depending on the plugin setting a user can go to the edit page
+		if ($loggedin_user->getGUID() != $owner->getGUID()) {
+			return $return_value;
+		}
+		
 		$return_value[] = ElggMenuItem::factory(array(
 			"name" => "entity_tools:user",
 			"text" => elgg_echo("entity_tools:menu:owner_block"),
-			"href" => "entities/owner/" . $user->username,
+			"href" => "entities/owner/" . $owner->username,
 			"context" => "profile",
 			"priority" => 500
 		));
+	} elseif (elgg_instanceof($owner, "group")) {
+		// admins always allowed
+		// group owners only if setting is !'admin'
+		if ($loggedin_user->isAdmin() || ((entity_tools_get_edit_access_setting() != "admin") && $owner->canEdit())) {
+			$return_value[] = ElggMenuItem::factory(array(
+				"name" => "entity_tools:group",
+				"text" => elgg_echo("entity_tools:menu:owner_block:group"),
+				"href" => "entities/group/" . $owner->getGUID(),
+			));
+		}
 	}
 	
 	return $return_value;

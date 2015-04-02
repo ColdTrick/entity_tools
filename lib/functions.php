@@ -98,6 +98,15 @@ function entity_tools_check_edit_access($forward = true) {
 						$result = true;
 					}
 					break;
+				case "group":
+					if (empty($page_owner) || !elgg_instanceof($page_owner, "group")) {
+						break;
+					}
+					
+					if ($page_owner->canEdit()) {
+						$result = true;
+					}
+					break;
 			}
 		}
 	}
@@ -105,65 +114,6 @@ function entity_tools_check_edit_access($forward = true) {
 	if ($forward && !$result) {
 		register_error(elgg_echo("entity_tools:error:check_edit_access"));
 		forward(REFERER);
-	}
-	
-	return $result;
-}
-
-/**
- * Get the owner transfer options
- *
- * @param ElggEntity $entity the entity to check owner for
- *
- * @return array
- */
-function entity_tools_get_owner_options(ElggEntity $entity) {
-	$result = array();
-	
-	if (empty($entity) || !elgg_instanceof($entity)) {
-		return $result;
-	}
-	
-	$owner = $entity->getOwnerEntity();
-	$user = elgg_get_logged_in_user_entity();
-	
-	// log unique guids
-	$temp_array = array($owner->getGUID());
-	
-	// add the current owner
-	$result[elgg_echo("entity_tools:dropdown:label:current_value")] = array($owner->getGUID() => $owner->name);
-	
-	// add the current user (if not the owner)
-	if ($owner->getGUID() != $user->getGUID()) {
-		$result[elgg_echo("entity_tools:dropdown:label:myself")] = array($user->getGUID() => $user->name);
-		
-		// add the guid to the filter
-		$temp_array[] = $user->getGUID();
-	}
-	
-	// add the friends of the current user
-	$friends = $user->getFriends(array("limit" => false));
-	if (!empty($friends)) {
-		// add label
-		$result[elgg_echo("entity_tools:dropdown:label:friends")] = array();
-		
-		foreach ($friends as $friend) {
-			// did we already have this user
-			if (in_array($friend->getGUID(), $temp_array)) {
-				continue;
-			}
-			
-			// add user
-			$result[elgg_echo("entity_tools:dropdown:label:friends")][$friend->getGUID()] = $friend->name;
-			
-			// add the guid to the filter
-			$temp_array[] = $friend->getGUID();
-		}
-		
-		// check for empty label
-		if (empty($result[elgg_echo("entity_tools:dropdown:label:friends")])) {
-			unset($result[elgg_echo("entity_tools:dropdown:label:friends")]);
-		}
 	}
 	
 	return $result;
@@ -183,6 +133,7 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 		return $result;
 	}
 	
+	$page_owner = elgg_get_page_owner_entity();
 	$owner = $entity->getOwnerEntity();
 	$container = $entity->getContainerEntity();
 	$user = elgg_get_logged_in_user_entity();
@@ -209,39 +160,41 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 		"order_by" => "ge.name"
 	);
 	
-	// add the groups of the current owner
-	$owner_groups = $owner->getGroups($group_options);
-	if (!empty($owner_groups)) {
-		if ($owner->getGUID() == $user->getGUID()) {
-			$label = elgg_echo("entity_tools:dropdown:label:my_groups");
-		} else {
-			$label = elgg_echo("entity_tools:dropdown:label:owner_groups");
-		}
-		
-		// add label
-		$result[$label] = array();
-		
-		foreach ($owner_groups as $group) {
-			// check if group not already proccessed
-			if (in_array($group->getGUID(), $temp_array)) {
-				continue;
+	if (elgg_instanceof($page_owner, 'user')) {
+		// add the groups of the current owner
+		$owner_groups = $owner->getGroups($group_options);
+		if (!empty($owner_groups)) {
+			if ($owner->getGUID() == $user->getGUID()) {
+				$label = elgg_echo("entity_tools:dropdown:label:my_groups");
+			} else {
+				$label = elgg_echo("entity_tools:dropdown:label:owner_groups");
 			}
 			
-			// add group
-			$result[$label][$group->getGUID()] = $group->name;
+			// add label
+			$result[$label] = array();
 			
-			// add the guid to the filter
-			$temp_array[] = $group->getGUID();
-		}
-		
-		// check for empty label
-		if (empty($result[$label])) {
-			unset($result[$label]);
+			foreach ($owner_groups as $group) {
+				// check if group not already proccessed
+				if (in_array($group->getGUID(), $temp_array)) {
+					continue;
+				}
+				
+				// add group
+				$result[$label][$group->getGUID()] = $group->name;
+				
+				// add the guid to the filter
+				$temp_array[] = $group->getGUID();
+			}
+			
+			// check for empty label
+			if (empty($result[$label])) {
+				unset($result[$label]);
+			}
 		}
 	}
 	
 	// add the groups of the current user (if not the owner)
-	if ($owner->getGUID() != $user->getGUID()) {
+	if ($page_owner->getGUID() != $user->getGUID()) {
 		$user_groups = $user->getGroups($group_options);
 		if (!empty($user_groups)) {
 			// add label

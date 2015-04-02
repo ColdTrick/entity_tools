@@ -21,6 +21,13 @@ function entity_tools_page_handler($page) {
 			}
 			$include_file = dirname(dirname(__FILE__)) . "/pages/owner.php";
 			break;
+		case "group":
+			if (isset($page[2])) {
+				set_input("subtype", $page[2]);
+			}
+			
+			$include_file = dirname(dirname(__FILE__)) . "/pages/container.php";
+			break;
 	}
 	
 	

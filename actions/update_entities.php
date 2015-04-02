@@ -3,10 +3,11 @@
 $type = get_input("type");
 $subtype = get_input("subtype");
 $owner_guid = (int) get_input("owner_guid");
+$container_guid = (int) get_input("container_guid");
 
 $params = get_input("params");
 
-if (empty($type) || empty($subtype) || empty($owner_guid) || empty($params) || !is_array($params)) {
+if (empty($type) || empty($subtype) || (empty($owner_guid) && empty($container_guid)) || empty($params) || !is_array($params)) {
 	register_error(elgg_echo("entity_tools:action:update_entities:error:input"));
 	forward(REFERER);
 }
@@ -23,7 +24,7 @@ foreach ($params as $guid => $options) {
 	}
 	
 	//validate entity
-	if (($entity->getType() != $type) || ($entity->getSubtype() != $subtype) || ($entity->getOwnerGUID() != $owner_guid)) {
+	if (($entity->getType() != $type) || ($entity->getSubtype() != $subtype) || (($entity->getOwnerGUID() != $owner_guid) && ($entity->getContainerGUID() != $container_guid))) {
 		$error_count++;
 		continue;
 	}

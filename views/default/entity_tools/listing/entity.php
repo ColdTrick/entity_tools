@@ -5,7 +5,6 @@ if (empty($entity) || !elgg_instanceof($entity)) {
 	return;
 }
 
-$owner_options = entity_tools_get_owner_options($entity);
 $container_options = entity_tools_get_container_options($entity);
 
 echo "<tr>";
