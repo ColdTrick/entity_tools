@@ -201,8 +201,16 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 		$temp_array[] = $owner->getGUID();
 	}
 	
+	// build default group options
+	$dbprefix = elgg_get_config("dbprefix");
+	$group_options = array(
+		"limit" => false,
+		"joins" => array("JOIN {$dbprefix}groups_entity ge ON e.guid = ge.guid"),
+		"order_by" => "ge.name"
+	);
+	
 	// add the groups of the current owner
-	$owner_groups = $owner->getGroups(array("limit" => false));
+	$owner_groups = $owner->getGroups($group_options);
 	if (!empty($owner_groups)) {
 		if ($owner->getGUID() == $user->getGUID()) {
 			$label = elgg_echo("entity_tools:dropdown:label:my_groups");
@@ -234,7 +242,7 @@ function entity_tools_get_container_options(ElggEntity $entity) {
 	
 	// add the groups of the current user (if not the owner)
 	if ($owner->getGUID() != $user->getGUID()) {
-		$user_groups = $user->getGroups(array("limit" => false));
+		$user_groups = $user->getGroups($group_options);
 		if (!empty($user_groups)) {
 			// add label
 			$result[elgg_echo("entity_tools:dropdown:label:my_groups")] = array();

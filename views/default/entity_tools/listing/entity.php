@@ -18,12 +18,12 @@ echo "<td>" . elgg_view("input/datetimepicker", array(
 	"name" => "params[" . $entity->getGUID() . "][time_created]",
 	"value" => $entity->time_created,
 	"timestamp" => true,
-	"readonly" => "readonly"
+	"readonly" => true
 )) . "</td>";
-echo "<td>" . elgg_view("input/dropdown_label", array(
+echo "<td>" . elgg_view("input/userpicker", array(
 	"name" => "params[" . $entity->getGUID() . "][owner_guid]",
-	"value" => $entity->getOwnerGUID(),
-	"options_values" => $owner_options
+	"values" => $entity->getOwnerGUID(),
+	"limit" => 1
 )) . "</td>";
 echo "<td>" . elgg_view("input/dropdown_label", array(
 	"name" => "params[" . $entity->getGUID() . "][container_guid]",

@@ -35,6 +35,10 @@ foreach ($params as $guid => $options) {
 	$new_owner_guid = elgg_extract("owner_guid", $options, $entity->getOwnerGUID());
 	$new_container_guid = elgg_extract("container_guid", $options, $entity->getContainerGUID());
 	
+	if (is_array($new_owner_guid)) {
+		$new_owner_guid = (int) $new_owner_guid[0];
+	}
+	
 	// get current values
 	$old_time_created = $entity->time_created;
 	$old_owner_guid = $entity->getOwnerGUID();
