@@ -5,8 +5,8 @@ Entity Tools
 
 Do advanced editing of the entities in your Elgg database
 
-1. Features
------------
+Features
+--------
 - support for:
 	- Blogs
 	- Pages
