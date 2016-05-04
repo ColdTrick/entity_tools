@@ -88,25 +88,16 @@ function entity_tools_check_edit_access($forward = true) {
 			$plugin_setting = entity_tools_get_edit_access_setting();
 			$page_owner = elgg_get_page_owner_entity();
 			
-			switch ($plugin_setting) {
-				case "user":
-					if (empty($page_owner) || !elgg_instanceof($page_owner, "user")) {
+			if (($page_owner instanceof ElggUser) || ($page_owner instanceof ElggGroup)) {
+				switch ($plugin_setting) {
+					case "group":
+						if (!($page_owner instanceof ElggGroup)) {
+							break;
+						}
+					case "user":
+						$result = $page_owner->canEdit();
 						break;
-					}
-					
-					if ($page_owner->getGUID() == $user->getGUID()) {
-						$result = true;
-					}
-					break;
-				case "group":
-					if (empty($page_owner) || !elgg_instanceof($page_owner, "group")) {
-						break;
-					}
-					
-					if ($page_owner->canEdit()) {
-						$result = true;
-					}
-					break;
+				}
 			}
 		}
 	}
