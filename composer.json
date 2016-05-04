@@ -1,0 +1,18 @@
+{
+	"name": "coldtrick/entity_tools",
+	"description": "Do advanced editing of the entities in your Elgg database",
+	"type": "elgg-plugin",
+	"keywords": ["elgg", "plugin", "database"],
+	"license": "GPL-2.0",
+	"support": {
+		"source": "https://github.com/ColdTrick/entity_tools",
+		"issues": "https://github.com/ColdTrick/entity_tools/issues"
+	},
+	"require": {
+		"composer/installers": "^1.0.8"
+	},
+	"require-dev": {
+		"coldtrick/sniffs": "dev-master",
+		"coldtrick/releases": "dev-master"
+	}
+}
