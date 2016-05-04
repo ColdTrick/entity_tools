@@ -1,10 +1,13 @@
-Version History
+Version history
 ===============
 
-2.0:
+2.0 (2016-05-04):
 
-- rewrite for Elgg 1.9
 - added: support for group owners
+- added: support for questions
+- fixed: limit length of title
+- fixed: manage group content not allowed when setting is 'all users'
+- changed: rewrite for Elgg 1.9
 
 1.0.1 (2013-04-05):
 
