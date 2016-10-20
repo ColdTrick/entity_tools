@@ -1,21 +1,35 @@
 <?php
 
-$entities = elgg_extract("entities", $vars);
-$container = elgg_extract("container", $vars);
-$type = elgg_extract("type", $vars);
-$subtype = elgg_extract("subtype", $vars);
+$entities = elgg_extract('entities', $vars);
+$container = elgg_extract('container', $vars);
 
 // show some description
-echo elgg_view("output/longtext", array("value" => elgg_echo("entity_tools:forms:container_listing:description")));
+echo elgg_view('output/longtext', [
+	'value' => elgg_echo('entity_tools:forms:container_listing:description'),
+]);
 
 // show entities
-echo elgg_view("entity_tools/listing/wrapper", $vars);
+echo elgg_view('entity_tools/listing/wrapper', $vars);
 
-// other form data
-echo "<div>";
-echo elgg_view("input/hidden", array("name" => "container_guid", "value" => $container->getGUID()));
-echo elgg_view("input/hidden", array("name" => "type", "value" => $type));
-echo elgg_view("input/hidden", array("name" => "subtype", "value" => $subtype));
-echo elgg_view("input/submit", array("value" => elgg_echo("save"), "class" => "elgg-button-submit elgg-requires-confirmation"));
-echo elgg_view("input/reset", array("value" => elgg_echo("reset")));
-echo "</div>";
+echo elgg_view_input('hidden', [
+	'name' => 'container_guid',
+	'value' => $container->getGUID(),
+]);
+
+echo elgg_view_input('hidden', [
+	'name' => 'type',
+	'value' => elgg_extract('type', $vars),
+]);
+
+echo elgg_view_input('hidden', [
+	'name' => 'subtype',
+	'value' => elgg_extract('subtype', $vars),
+]);
+
+echo '<div class="elgg-foot">';
+echo elgg_view('input/submit', [
+	'value' => elgg_echo('save'),
+	'class' => 'elgg-button-submit',
+	'data-confirm' => elgg_echo('question:areyousure'),
+]);
+echo '</div>';

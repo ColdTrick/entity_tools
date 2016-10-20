@@ -1,14 +1,14 @@
 <?php
 
-$type = get_input("type");
-$subtype = get_input("subtype");
-$owner_guid = (int) get_input("owner_guid");
-$container_guid = (int) get_input("container_guid");
+$type = get_input('type');
+$subtype = get_input('subtype');
+$owner_guid = (int) get_input('owner_guid');
+$container_guid = (int) get_input('container_guid');
 
-$params = get_input("params");
+$params = get_input('params');
 
 if (empty($type) || empty($subtype) || (empty($owner_guid) && empty($container_guid)) || empty($params) || !is_array($params)) {
-	register_error(elgg_echo("entity_tools:action:update_entities:error:input"));
+	register_error(elgg_echo('entity_tools:action:update_entities:error:input'));
 	forward(REFERER);
 }
 
@@ -32,9 +32,9 @@ foreach ($params as $guid => $options) {
 	$update_needed = false;
 	
 	// get new values
-	$new_time_created = elgg_extract("time_created", $options, $entity->time_created);
-	$new_owner_guid = elgg_extract("owner_guid", $options, $entity->getOwnerGUID());
-	$new_container_guid = elgg_extract("container_guid", $options, $entity->getContainerGUID());
+	$new_time_created = elgg_extract('time_created', $options, $entity->time_created);
+	$new_owner_guid = elgg_extract('owner_guid', $options, $entity->getOwnerGUID());
+	$new_container_guid = elgg_extract('container_guid', $options, $entity->getContainerGUID());
 	
 	if (is_array($new_owner_guid)) {
 		$new_owner_guid = (int) $new_owner_guid[0];
@@ -59,11 +59,11 @@ foreach ($params as $guid => $options) {
 		$update_needed = true;
 		
 		switch ($subtype) {
-			case "blog":
+			case 'blog':
 				// with blogs also transfer icon (if needed)
 				entity_tools_move_blog_icon($entity, $old_owner_guid);
 				break;
-			case "page_top":
+			case 'page_top':
 				
 				// make sure the rlast revision is correct
 				entity_tools_check_page_revision($entity, $old_owner_guid);
@@ -71,7 +71,7 @@ foreach ($params as $guid => $options) {
 				// move all subpages by the same user
 				entity_tools_update_subpages_owner_guid($entity, $old_owner_guid);
 				break;
-			case "file":
+			case 'file':
 				// move the physical file(s)
 				entity_tools_move_file(get_entity($entity->getGUID()), $new_owner_guid);
 				break;
@@ -81,11 +81,11 @@ foreach ($params as $guid => $options) {
 		$new_owner = get_user($new_owner_guid);
 		$old_owner = get_user($old_owner_guid);
 		
-		$subject = elgg_echo("entity_tools:notify:transfer_owner:subject", array(elgg_echo("item:" . $type . ":" . $subtype)));
-		$msg = elgg_echo("entity_tools:notify:transfer_owner:message", array(
+		$subject = elgg_echo('entity_tools:notify:transfer_owner:subject', array(elgg_echo('item:' . $type . ':' . $subtype)));
+		$msg = elgg_echo('entity_tools:notify:transfer_owner:message', array(
 					$new_owner->name,
 					$old_owner->name,
-					elgg_echo("item:" . $type . ":" . $subtype),
+					elgg_echo('item:' . $type . ':' . $subtype),
 					$entity->title,
 					$entity->getURL()
 		));
@@ -103,10 +103,10 @@ foreach ($params as $guid => $options) {
 		
 		$update_needed = true;
 		
-		if ($subtype == "page_top") {
+		if ($subtype == 'page_top') {
 			// move all the subpages to the new container
 			entity_tools_update_subpages_container_guid($entity);
-		} elseif ($subtype == "question") {
+		} elseif ($subtype == 'question') {
 			entity_tools_update_answers_access($entity);
 		}
 		
@@ -118,7 +118,7 @@ foreach ($params as $guid => $options) {
 		
 		$update_needed = true;
 		
-		if ($subtype == "page_top") {
+		if ($subtype == 'page_top') {
 			// move all the subpages to the new container
 			entity_tools_update_subpages_container_guid($entity);
 		}
@@ -138,9 +138,9 @@ foreach ($params as $guid => $options) {
 }
 
 if (empty($error_count)) {
-	system_message(elgg_echo("entity_tools:action:update_entities:success", array($update_count)));
+	system_message(elgg_echo('entity_tools:action:update_entities:success', array($update_count)));
 } else {
-	register_error(elgg_echo("entity_tools:action:update_entities:error:not_all", array($update_count, $error_count)));
+	register_error(elgg_echo('entity_tools:action:update_entities:error:not_all', array($update_count, $error_count)));
 }
 
 forward(REFERER);

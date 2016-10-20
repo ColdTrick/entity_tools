@@ -1,11 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . "/lib/functions.php");
-require_once(dirname(__FILE__) . "/lib/hooks.php");
-require_once(dirname(__FILE__) . "/lib/page_handlers.php");
+require_once(dirname(__FILE__) . '/lib/functions.php');
+require_once(dirname(__FILE__) . '/lib/hooks.php');
 
 // register default Elgg events
-elgg_register_event_handler("init", "system", "entity_tools_init");
+elgg_register_event_handler('init', 'system', 'entity_tools_init');
 
 /**
  * Called during system init
@@ -14,25 +13,41 @@ elgg_register_event_handler("init", "system", "entity_tools_init");
  */
 function entity_tools_init() {
 	// register page handler
-	elgg_register_page_handler("entities", "entity_tools_page_handler");
+	elgg_register_page_handler('entities', 'entity_tools_page_handler');
 	
 	// register JS / CSS
-	$base_url = elgg_get_site_url() . "mod/entity_tools/vendors/jquery/";
-	elgg_register_js("jquery.timepicker", $base_url . "jquery-ui-timepicker-addon.js");
-	elgg_register_js("jquery.slider", $base_url . "jquery-ui-slider.js");
-	elgg_register_css("jquery.timepicker", $base_url . "jquery-ui-timepicker-addon.css");
-	elgg_register_css("jquery.slider", $base_url . "jquery-ui-slider.css");
+	$base_url = elgg_get_site_url() . 'mod/entity_tools/vendors/jquery/';
+	elgg_register_js('jquery.timepicker', $base_url . 'jquery-ui-timepicker-addon.js');
+	elgg_register_js('jquery.slider', $base_url . 'jquery-ui-slider.js');
+	elgg_register_css('jquery.timepicker', $base_url . 'jquery-ui-timepicker-addon.css');
+	elgg_register_css('jquery.slider', $base_url . 'jquery-ui-slider.css');
 	
 	// extend js
-	elgg_extend_view("js/elgg", "js/entity_tools/site");
-	elgg_extend_view("css/elgg", "css/entity_tools/site");
+	elgg_extend_view('js/elgg', 'js/entity_tools/site.js');
+	elgg_extend_view('css/elgg', 'css/entity_tools/site.css');
 	
 	// register plugin hooks
-	elgg_register_plugin_hook_handler("register", "menu:filter", "entity_tools_filter_menu_hook");
-	elgg_register_plugin_hook_handler("register", "menu:user_hover", "entity_tools_user_hover_menu_hook");
-	elgg_register_plugin_hook_handler("register", "menu:owner_block", "entity_tools_owner_block_menu_hook");
-	elgg_register_plugin_hook_handler("prepare", "menu:filter", "entity_tools_filter_menu_prepare_hook");
+	elgg_register_plugin_hook_handler('register', 'menu:filter', 'entity_tools_filter_menu_hook');
+	elgg_register_plugin_hook_handler('register', 'menu:user_hover', 'entity_tools_user_hover_menu_hook');
+	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'entity_tools_owner_block_menu_hook');
+	elgg_register_plugin_hook_handler('prepare', 'menu:filter', 'entity_tools_filter_menu_prepare_hook');
 	
 	// register actions
-	elgg_register_action("entity_tools/update_entities", dirname(__FILE__) . "/actions/update_entities.php");
+	elgg_register_action('entity_tools/update_entities', dirname(__FILE__) . '/actions/update_entities.php');
+}
+
+/**
+ * Entity tools page handler
+ *
+ * @param array $page url parts
+ *
+ * @return true|void
+ */
+function entity_tools_page_handler($page) {
+	switch ($page[0]) {
+		case 'owner':
+		case 'group':
+			echo elgg_view_resource("entity_tools/{$page[0]}", ['subtype' => elgg_extract(2, $page)]);
+			return true;
+	}
 }

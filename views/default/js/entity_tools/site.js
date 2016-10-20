@@ -1,12 +1,7 @@
-<?php
+elgg.provide('elgg.entity_tools');
 
-?>
-//<script>
-
-elgg.provide("elgg.entity_tools");
-
-elgg.entity_tools.init = function(){
-	if($('.elgg-input-datetime').length){
+elgg.entity_tools.init = function() {
+	if ($('.elgg-input-datetime').length) {
 		$('.elgg-input-datetime').datetimepicker({
 			dateFormat: 'yy-mm-dd',
 			timeFormat: 'hh:mm',
@@ -32,4 +27,4 @@ elgg.entity_tools.init = function(){
 	}
 };
 
-elgg.register_hook_handler("init", "system", elgg.entity_tools.init);
+elgg.register_hook_handler('init', 'system', elgg.entity_tools.init);

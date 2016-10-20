@@ -1,21 +1,22 @@
 <?php
 
-$entities = elgg_extract("entities", $vars);
+$entities = elgg_extract('entities', $vars);
 if (empty($entities)) {
 	return;
 }
 
-echo "<table id='entity-tools-listing-table' class='elgg-table mbm'>";
-
-echo "<tr>";
-echo "<th>" . elgg_echo("title") . "</th>";
-echo "<th>" . elgg_echo("entity_tools:created") . "</th>";
-echo "<th>" . elgg_echo("entity_tools:owner") . "</th>";
-echo "<th>" . elgg_echo("entity_tools:container") . "</th>";
-echo "</tr>";
+$rows = '<tr>';
+$rows .= '<th>' . elgg_echo('title') . '</th>';
+$rows .= '<th>' . elgg_echo('entity_tools:created') . '</th>';
+$rows .= '<th>' . elgg_echo('entity_tools:owner') . '</th>';
+$rows .= '<th>' . elgg_echo('entity_tools:container') . '</th>';
+$rows .= '</tr>';
 
 foreach ($entities as $entity) {
-	echo elgg_view("entity_tools/listing/entity", array("entity" => $entity));
+	$rows .= elgg_view('entity_tools/listing/entity', ['entity' => $entity]);
 }
 
-echo "</table>";
+echo elgg_format_element('table', [
+	'id' => 'entity-tools-listing-table',
+	'class' => 'elgg-table mbm',
+], $rows);

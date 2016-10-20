@@ -16,7 +16,7 @@
 function entity_tools_filter_menu_hook($hook, $type, $return_value, $params) {
 	
 	if (!elgg_in_context("entities")) {
-		return $return_value;
+		return;
 	}
 	
 	$return_value = array();
@@ -82,16 +82,16 @@ function entity_tools_filter_menu_hook($hook, $type, $return_value, $params) {
  */
 function entity_tools_filter_menu_prepare_hook($hook, $type, $return_value, $params) {
 	
-	if (!elgg_in_context("entities")) {
-		return $return_value;
+	if (!elgg_in_context('entities')) {
+		return;
 	}
 	
 	if (empty($params) || !is_array($params)) {
-		return $return_value;
+		return;
 	}
 	
-	if (!empty($params["selected_item"])) {
-		return $return_value;
+	if (!empty($params['selected_item'])) {
+		return;
 	}
 	
 	foreach ($return_value as $section => $items) {
@@ -121,26 +121,22 @@ function entity_tools_filter_menu_prepare_hook($hook, $type, $return_value, $par
 function entity_tools_user_hover_menu_hook($hook, $type, $return_value, $params) {
 	
 	if (!elgg_is_admin_logged_in()) {
-		return $return_value;
+		return;
 	}
 	
-	if (empty($params) || !is_array($params)) {
-		return $return_value;
-	}
-	
-	$user = elgg_extract("entity", $params);
-	if (empty($user) || !elgg_instanceof($user, "user")) {
-		return $return_value;
+	$user = elgg_extract('entity', $params);
+	if (!($user instanceof \ElggUser)) {
+		return;
 	}
 	
 	// add the admin menu
-	$return_value[] = ElggMenuItem::factory(array(
-		"name" => "entity_tools:admin",
-		"text" => elgg_echo("entity_tools:menu:user_hover"),
-		"href" => "entities/owner/" . $user->username,
-		"section" => "admin",
-		"priority" => 500
-	));
+	$return_value[] = \ElggMenuItem::factory([
+		'name' => 'entity_tools:admin',
+		'text' => elgg_echo('entity_tools:menu:user_hover'),
+		'href' => 'entities/owner/' . $user->username,
+		'section' => 'admin',
+		'priority' => 500,
+	]);
 	
 	return $return_value;
 }
@@ -159,40 +155,33 @@ function entity_tools_owner_block_menu_hook($hook, $type, $return_value, $params
 	
 	$loggedin_user = elgg_get_logged_in_user_entity();
 	if (empty($loggedin_user)) {
-		return $return_value;
+		return;
 	}
-	
-	if (empty($params) || !is_array($params)) {
-		return $return_value;
-	}
-	
-	$owner = elgg_extract("entity", $params);
-	if (empty($owner) || (!elgg_instanceof($owner, "user") && !elgg_instanceof($owner, "group"))) {
-		return $return_value;
-	}
-	
-	if (elgg_instanceof($owner, "user") && (entity_tools_get_edit_access_setting() == "user")) {
+
+	$owner = elgg_extract('entity', $params);
+
+	if ($owner instanceof \ElggUser && (entity_tools_get_edit_access_setting() == 'user')) {
 		// depending on the plugin setting a user can go to the edit page
 		if ($loggedin_user->getGUID() != $owner->getGUID()) {
-			return $return_value;
+			return;
 		}
 		
-		$return_value[] = ElggMenuItem::factory(array(
-			"name" => "entity_tools:user",
-			"text" => elgg_echo("entity_tools:menu:owner_block"),
-			"href" => "entities/owner/" . $owner->username,
-			"context" => "profile",
-			"priority" => 500
-		));
-	} elseif (elgg_instanceof($owner, "group")) {
+		$return_value[] = \ElggMenuItem::factory([
+			'name' => 'entity_tools:user',
+			'text' => elgg_echo('entity_tools:menu:owner_block'),
+			'href' => 'entities/owner/' . $owner->username,
+			'context' => 'profile',
+			'priority' => 500,
+		]);
+	} elseif ($owner instanceof \ElggGroup) {
 		// admins always allowed
 		// group owners only if setting is !'admin'
-		if ($loggedin_user->isAdmin() || ((entity_tools_get_edit_access_setting() != "admin") && $owner->canEdit())) {
-			$return_value[] = ElggMenuItem::factory(array(
-				"name" => "entity_tools:group",
-				"text" => elgg_echo("entity_tools:menu:owner_block:group"),
-				"href" => "entities/group/" . $owner->getGUID(),
-			));
+		if ($loggedin_user->isAdmin() || ((entity_tools_get_edit_access_setting() !== 'admin') && $owner->canEdit())) {
+			$return_value[] = \ElggMenuItem::factory([
+				'name' => 'entity_tools:group',
+				'text' => elgg_echo('entity_tools:menu:owner_block:group'),
+				'href' => 'entities/group/' . $owner->getGUID(),
+			]);
 		}
 	}
 	

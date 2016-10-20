@@ -1,27 +1,38 @@
 <?php
 
-$entities = elgg_extract("entities", $vars);
-$owner = elgg_extract("owner", $vars);
-$type = elgg_extract("type", $vars);
-$subtype = elgg_extract("subtype", $vars);
+$owner = elgg_extract('owner', $vars);
 
 // show some description
-echo elgg_view("output/longtext", array("value" => elgg_echo("entity_tools:forms:owner_listing:description")));
+echo elgg_view('output/longtext', [
+	'value' => elgg_echo('entity_tools:forms:owner_listing:description'),
+]);
 
 // show entities
-echo elgg_view("entity_tools/listing/wrapper", $vars);
-
-// other form data
-echo "<div>";
-echo elgg_view("input/hidden", array("name" => "owner_guid", "value" => $owner->getGUID()));
-echo elgg_view("input/hidden", array("name" => "type", "value" => $type));
-echo elgg_view("input/hidden", array("name" => "subtype", "value" => $subtype));
-echo elgg_view("input/submit", array("value" => elgg_echo("save"), "class" => "elgg-button-submit elgg-requires-confirmation"));
-echo elgg_view("input/reset", array("value" => elgg_echo("reset")));
-echo "</div>";
+echo elgg_view('entity_tools/listing/wrapper', $vars);
 
 if (elgg_get_page_owner_guid() != elgg_get_logged_in_user_guid()) {
-	echo "<div class='elgg-foot elgg-subtext'>";
-	echo elgg_echo("entity_tools:forms:owner_listing:disclaimer");
-	echo "</div>";
+	echo elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('entity_tools:forms:owner_listing:disclaimer'));
 }
+
+echo elgg_view_input('hidden', [
+	'name' => 'owner_guid',
+	'value' => $owner->getGUID(),
+]);
+
+echo elgg_view_input('hidden', [
+	'name' => 'type',
+	'value' => elgg_extract('type', $vars),
+]);
+
+echo elgg_view_input('hidden', [
+	'name' => 'subtype',
+	'value' => elgg_extract('subtype', $vars),
+]);
+
+echo '<div class="elgg-foot">';
+echo elgg_view('input/submit', [
+	'value' => elgg_echo('save'),
+	'class' => 'elgg-button-submit',
+	'data-confirm' => elgg_echo('question:areyousure'),
+]);
+echo '</div>';

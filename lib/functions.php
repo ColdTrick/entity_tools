@@ -40,11 +40,11 @@ function entity_tools_get_suported_entity_types() {
  * @return array
  */
 function entity_tools_get_allowed_attibutes() {
-	return array(
-		"time_created",
-		"owner_guid",
-		"container_guid"
-	);
+	return [
+		'time_created',
+		'owner_guid',
+		'container_guid',
+	];
 }
 
 /**
@@ -53,17 +53,7 @@ function entity_tools_get_allowed_attibutes() {
  * @return string
  */
 function entity_tools_get_edit_access_setting() {
-	static $plugin_setting;
-	
-	if (!isset($plugin_setting)) {
-		$plugin_setting = "admin";
-			
-		if ($setting = elgg_get_plugin_setting("edit_access", "entity_tools")) {
-			$plugin_setting = $setting;
-		}
-	}
-	
-	return $plugin_setting;
+	return elgg_get_plugin_setting('edit_access', 'entity_tools', 'admin');
 }
 
 /**

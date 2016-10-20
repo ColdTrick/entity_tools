@@ -17,70 +17,50 @@
  * @uses $vars["class"]          Additional CSS class
  */
 
-if (isset($vars["class"])) {
-	$vars["class"] = "elgg-input-dropdown {$vars["class"]}";
-} else {
-	$vars["class"] = "elgg-input-dropdown";
-}
+$class = (array) elgg_extract('class', $vars, []);
+$class[] = 'elgg-input-dropdown';
 
-$defaults = array(
-	"disabled" => false,
-	"value" => "",
-	"options_values" => array(),
-	"options" => array(),
-);
+$vars['class'] = $class;
+$vars['disabled'] = elgg_extract('disabled', $vars, false);
 
-$vars = array_merge($defaults, $vars);
+$options_values = elgg_extract('options_values', $vars);
+unset($vars['options_values']);
 
-$options_values = $vars["options_values"];
-unset($vars["options_values"]);
+$options = elgg_extract('options', $vars);
+unset($vars['options']);
 
-$options = $vars["options"];
-unset($vars["options"]);
+$value = elgg_extract('value', $vars);
+unset($vars['value']);
 
-$value = $vars["value"];
-unset($vars["value"]);
-
-?>
-<select <?php echo elgg_format_attributes($vars); ?>>
-<?php
-
+$list_options = '';
 if (!empty($options_values) && is_array($options_values)) {
 	foreach ($options_values as $opt_value => $option) {
-
 		if (is_array($option)) {
-			$optgroup_attr = elgg_format_attributes(array("label" => $opt_value));
-			
-			echo "<optgroup " . $optgroup_attr . ">";
-			
+			$group_list_options = '';
 			foreach ($option as $some_value => $some_label) {
-				$option_attrs = elgg_format_attributes(array(
-					"value" => $some_value,
-					"selected" => (string)$some_value == (string)$value,
-				));
-				
-				echo "<option $option_attrs>$some_label</option>";
+				$option_attrs = [
+					'value' => $some_value,
+					'selected' => (string) $some_value == (string) $value,
+				];
+				$group_list_options .= elgg_format_element('option', $option_attrs, $some_label);
 			}
 			
-			echo "</optgroup>";
+			$list_options .= elgg_format_element('optgroup', ['label' => $opt_value], $group_list_options);
 		} else {
-			$option_attrs = elgg_format_attributes(array(
-				"value" => $opt_value,
-				"selected" => (string)$opt_value == (string)$value,
-			));
-	
-			echo "<option $option_attrs>$option</option>";
+			$option_attrs = [
+				'value' => $opt_value,
+				'selected' => (string) $option == (string) $value,
+			];
+			$list_options .= elgg_format_element('option', $option_attrs, $option);
 		}
 	}
 } elseif (!empty($options) && is_array($options)) {
 	foreach ($options as $option) {
-
-		$option_attrs = elgg_format_attributes(array(
-			"selected" => (string)$option == (string)$value
-		));
-
-		echo "<option $option_attrs>$option</option>";
+		$option_attrs = [
+			'selected' => (string) $option == (string) $value,
+		];
+		$list_options .= elgg_format_element('option', $option_attrs, $option);
 	}
 }
-?>
-</select>
+
+echo elgg_format_element('select', $vars, $list_options);

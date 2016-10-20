@@ -8,7 +8,7 @@ entity_tools_check_edit_access();
 
 // make sure we can edit the page owner
 $page_owner = elgg_get_page_owner_entity();
-if (empty($page_owner) || !elgg_instanceof($page_owner, "user") || !$page_owner->canEdit()) {
+if (empty($page_owner) || !elgg_instanceof($page_owner, "group") || !$page_owner->canEdit()) {
 	register_error(elgg_echo("pageownerunavailable", array(elgg_get_page_owner_guid())));
 	forward(REFERER);
 }
@@ -17,7 +17,7 @@ if (empty($page_owner) || !elgg_instanceof($page_owner, "user") || !$page_owner-
 $valid_subtype = false;
 
 $type = "object";
-$subtype = get_input("subtype");
+$subtype = elgg_extract('subtype', $vars);
 
 $offset = (int) get_input("offset", 0);
 $offset = max(0, $offset);
@@ -54,14 +54,14 @@ if (!$valid_subtype) {
 	forward(REFERER);
 }
 	
-$title_text = elgg_echo("entity_tools:page:owner:title", array($page_owner->name, elgg_echo("item:" . $type . ":" . $subtype)));
+$title_text = elgg_echo("entity_tools:page:container:title", array($page_owner->name, elgg_echo("item:" . $type . ":" . $subtype)));
 
 $options = array(
 	"type" => $type,
 	"subtype" => $subtype,
 	"limit" => 50,
 	"offset" => $offset,
-	"owner_guid" => $page_owner->getGUID()
+	"container_guid" => $page_owner->getGUID()
 );
 
 $entities = elgg_get_entities($options);
@@ -71,13 +71,13 @@ if (!empty($entities)) {
 	);
 	
 	$body_vars = array(
-		"owner" => $page_owner,
+		"container" => $page_owner,
 		"entities" => $entities,
 		"type" => $type,
 		"subtype" => $subtype
 	);
 	
-	$content = elgg_view_form("entity_tools/owner_listing", $form_vars, $body_vars);
+	$content = elgg_view_form("entity_tools/container_listing", $form_vars, $body_vars);
 } else {
 	$content = elgg_echo("notfound");
 }
