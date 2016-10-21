@@ -5,6 +5,8 @@ elgg_load_js('jquery.slider');
 elgg_load_css('jquery.timepicker');
 elgg_load_css('jquery.slider');
 
+elgg_require_js('input/datetimepicker');
+
 $class = (array) elgg_extract('class', $vars, []);
 $class[] = 'elgg-input-datetime';
 

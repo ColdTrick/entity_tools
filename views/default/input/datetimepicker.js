@@ -1,6 +1,4 @@
-elgg.provide('elgg.entity_tools');
-
-elgg.entity_tools.init = function() {
+define(['jquery'], function ($) {
 	if ($('.elgg-input-datetime').length) {
 		$('.elgg-input-datetime').datetimepicker({
 			dateFormat: 'yy-mm-dd',
@@ -14,17 +12,15 @@ elgg.entity_tools.init = function() {
 					var textParts = dateText.split(" ");
 					var dateParts = textParts[0].split("-");
 					var timeParts = textParts[1].split(":");
-
+	
 					var timestamp = Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]);
 					
 					timestamp = timestamp / 1000;
-
+	
 					var id = $(this).attr('id');
 					$('input[name="' + id + '"]').val(timestamp);
 				}
 			}
 		});
 	}
-};
-
-elgg.register_hook_handler('init', 'system', elgg.entity_tools.init);
+});

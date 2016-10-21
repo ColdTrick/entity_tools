@@ -5,6 +5,10 @@ if (!($entity instanceof \ElggEntity)) {
 	return;
 }
 
+$supported = entity_tools_get_supported_entity_types();
+$class = $supported[$entity->getSubtype()];
+$migrate = new $class($entity);
+
 $row_data = [];
 
 $row_data[] = elgg_view('output/url', [
@@ -13,24 +17,30 @@ $row_data[] = elgg_view('output/url', [
 	'href' => $entity->getURL(),
 ]);
 
-$row_data[] = elgg_view('input/datetimepicker', [
-	'name' => "params[{$entity->getGUID()}][time_created]",
-	'value' => $entity->time_created,
-	'timestamp' => true,
-	'readonly' => true,
-]);
+if ($migrate->canBackDate()) {
+	$row_data[] = elgg_view('input/datetimepicker', [
+		'name' => "params[{$entity->guid}][time_created]",
+		'value' => $entity->time_created,
+		'timestamp' => true,
+		'readonly' => true,
+	]);
+}
 
-$row_data[] = elgg_view('input/userpicker', [
-	'name' => "params[{$entity->getGUID()}][owner_guid]",
-	'values' => $entity->getOwnerGUID(),
-	'limit' => 1,
-]);
+if ($migrate->canChangeOwner()) {
+	$row_data[] = elgg_view('input/userpicker', [
+		'name' => "params[{$entity->guid}][owner_guid]",
+		'values' => $entity->getOwnerGUID(),
+		'limit' => 1,
+	]);
+}
 
-$row_data[] = elgg_view('input/dropdown_label', [
-	'name' => "params[{$entity->getGUID()}][container_guid]",
-	'value' => $entity->getContainerGUID(),
-	'options_values' => entity_tools_get_container_options($entity),
-]);
+if ($migrate->canChangeContainer()) {
+	$row_data[] = elgg_view('input/entity_tools_container', [
+		'entity' => $entity,
+		'name' => "params[{$entity->guid}][container_guid]",
+		'value' => $entity->getContainerGUID(),
+	]);
+}
 
 $row = implode('</td><td>', $row_data);
 
