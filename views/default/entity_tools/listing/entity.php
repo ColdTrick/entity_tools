@@ -11,9 +11,14 @@ $migrate = new $class($entity);
 
 $row_data = [];
 
+$title = $entity->getDisplayName();
+if (empty($title)) {
+	$title = $entity->description;
+}
+
 $row_data[] = elgg_view('output/url', [
-	'text' => elgg_get_excerpt($entity->title, 30),
-	'title' => $entity->title,
+	'text' => elgg_get_excerpt($title, 30),
+	'title' => $title,
 	'href' => $entity->getURL(),
 ]);
 
