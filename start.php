@@ -66,6 +66,7 @@ function entity_tools_get_supported_entity_types() {
 	$result = elgg_trigger_plugin_hook('supported_types', 'entity_tools', [], [
 		'blog' => '\ColdTrick\EntityTools\MigrateBlog',
 		'discussion' => '\ColdTrick\EntityTools\MigrateDiscussion',
+		'thewire' => '\ColdTrick\EntityTools\MigrateTheWire',
 	]);
 	return $result;
 }
