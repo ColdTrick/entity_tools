@@ -35,7 +35,12 @@ if ($migrate->canChangeOwner()) {
 }
 
 if ($migrate->canChangeContainer()) {
-	$row_data[] = elgg_view('input/entity_tools_container', [
+	$view = 'input/entity_tools_container';
+	if (elgg_view_exists("{$view}/{$entity->getSubtype()}")) {
+		$view = "{$view}/{$entity->getSubtype()}";
+	}
+	
+	$row_data[] = elgg_view($view, [
 		'entity' => $entity,
 		'name' => "params[{$entity->guid}][container_guid]",
 		'value' => $entity->getContainerGUID(),
