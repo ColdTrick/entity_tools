@@ -63,10 +63,6 @@ foreach ($params as $guid => $options) {
 		$owner_guid_changed = true;
 		
 // 		switch ($subtype) {
-// 			case 'blog':
-// 				// with blogs also transfer icon (if needed)
-// 				entity_tools_move_blog_icon($entity, $old_owner_guid);
-// 				break;
 // 			case 'page_top':
 				
 // 				// make sure the rlast revision is correct
@@ -75,26 +71,7 @@ foreach ($params as $guid => $options) {
 // 				// move all subpages by the same user
 // 				entity_tools_update_subpages_owner_guid($entity, $old_owner_guid);
 // 				break;
-// 			case 'file':
-// 				// move the physical file(s)
-// 				entity_tools_move_file(get_entity($entity->getGUID()), $new_owner_guid);
-// 				break;
-// 		}
-		
-		// notify the new owner
-// 		$new_owner = get_user($new_owner_guid);
-// 		$old_owner = get_user($old_owner_guid);
-		
-// 		$subject = elgg_echo('entity_tools:notify:transfer_owner:subject', array(elgg_echo('item:object:' . $subtype)));
-// 		$msg = elgg_echo('entity_tools:notify:transfer_owner:message', array(
-// 					$new_owner->name,
-// 					$old_owner->name,
-// 					elgg_echo('item:object:' . $subtype),
-// 					$entity->title,
-// 					$entity->getURL()
-// 		));
-		
-// 		notify_user($new_owner_guid, $old_owner_guid, $subject, $msg);
+
 	}
 		
 	// check for container_guid
@@ -128,8 +105,6 @@ foreach ($params as $guid => $options) {
 // // 			entity_tools_update_answers_access($entity);
 // // 		}
 		
-// 		// check access_id for the new container
-// // 		entity_tools_update_access_id($entity, $old_container_guid);
 // 	} elseif (($new_owner_guid != $old_owner_guid) && (get_user($old_container_guid) || get_user($new_container_guid))) {
 // 		// moved the entity to a different user, so also change container to this user
 // 		$entity->container_guid = $new_owner_guid;
@@ -141,8 +116,6 @@ foreach ($params as $guid => $options) {
 // // 			entity_tools_update_subpages_container_guid($entity);
 // // 		}
 		
-// 		// check access_id for the new container
-// 		entity_tools_update_access_id($entity, $old_container_guid);
 // 	}
 	
 	// update the entity?
