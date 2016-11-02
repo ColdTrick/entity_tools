@@ -1,7 +1,5 @@
 <?php
 
-require_once(dirname(__FILE__) . '/lib/helpers.php');
-
 // register default Elgg events
 elgg_register_event_handler('init', 'system', 'entity_tools_init');
 

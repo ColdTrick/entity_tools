@@ -84,19 +84,6 @@ foreach ($params as $guid => $options) {
 		$update_needed = true;
 	}
 	
-	// check for container_guid
-// 	if (($new_container_guid != $old_container_guid) && (!get_user($new_container_guid) || (get_user($new_container_guid) && ($new_container_guid == $entity->getOwnerGUID())))) {
-// 		// the new container is not a user or the owner
-// 		$entity->container_guid = $new_container_guid;
-		
-// 		$update_needed = true;
-		
-// // 		if ($subtype == 'question') {
-// // 			entity_tools_update_answers_access($entity);
-// // 		}
-		
-// 	}
-	
 	// update the entity?
 	if (!$update_needed) {
 		continue;
