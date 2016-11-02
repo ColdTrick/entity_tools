@@ -98,7 +98,7 @@ class MigratePages extends Migrate {
 			return;
 		}
 		
-		$subpages = $this->getOwnedSubPages($entity, $old_owner_guid);
+		$subpages = $this->getOwnedSubPages($entity);
 		foreach ($subpages as $subpage) {
 			
 			$migrate = new MigratePages($subpage);

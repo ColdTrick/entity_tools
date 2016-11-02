@@ -4,6 +4,10 @@ namespace ColdTrick\EntityTools;
 
 class MigrateBlog extends Migrate {
 	
+	/**
+	 * {@inheritDoc}
+	 * @see \ColdTrick\EntityTools\Migrate::setSupportedOptions()
+	 */
 	protected function setSupportedOptions() {
 		$this->supported_options = [
 			'backdate' => true,

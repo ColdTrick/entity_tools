@@ -14,8 +14,6 @@ class Migrate {
 	 * Create a migration helper object
 	 *
 	 * @param \ElggObject $object the object to migrate
-	 *
-	 * @return Migrate
 	 */
 	public function __construct(\ElggObject $object) {
 		
@@ -146,7 +144,8 @@ class Migrate {
 		// ignore access restrictions
 		$ia = elgg_set_ignore_access(true);
 		
-		$old_container = get_entity($this->original_attributes['container_guid']);
+		$old_container_guid = (int) $this->original_attributes['container_guid'];
+		$old_container = get_entity($old_container_guid);
 		$new_container = $this->object->getContainerEntity();
 		
 		// check the old container to check access_id
