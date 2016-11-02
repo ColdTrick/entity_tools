@@ -10,6 +10,13 @@ class Migrate {
 	
 	protected $original_attributes = [];
 	
+	/**
+	 * Create a migration helper object
+	 *
+	 * @param \ElggObject $object the object to migrate
+	 *
+	 * @return Migrate
+	 */
 	public function __construct(\ElggObject $object) {
 		
 		$this->object = $object;
@@ -22,6 +29,11 @@ class Migrate {
 		$this->setSupportedOptions();
 	}
 	
+	/**
+	 * Set the supported options for this migration
+	 *
+	 * @return void
+	 */
 	protected function setSupportedOptions() {
 		$this->supported_options = [
 			'backdate' => false,
@@ -30,34 +42,75 @@ class Migrate {
 		];
 	}
 	
+	/**
+	 * Can the entity be backdated
+	 *
+	 * @return bool
+	 */
 	public function canBackDate() {
-		return $this->supported_options['backdate'];
+		return (bool) elgg_extract('backdate', $this->supported_options, false);
 	}
 	
+	/**
+	 * Backdate the entity
+	 *
+	 * @param int $new_time the new time_created
+	 *
+	 * @retrun void
+	 */
 	public function backDate($new_time) {
 		$this->object->time_created = $new_time;
 	}
 	
+	/**
+	 * Can the owner be changed
+	 *
+	 * @return bool
+	 */
 	public function canChangeOwner() {
-		return $this->supported_options['change_owner'];
+		return (bool) elgg_extract('change_owner', $this->supported_options, false);
 	}
 	
+	/**
+	 * Changed the owner_guid of the entity
+	 *
+	 * @param int $new_owner_guid the new owner_guid
+	 *
+	 * @return void
+	 */
 	public function changeOwner($new_owner_guid) {
+		
 		if (!get_user($new_owner_guid)) {
 			return;
 		}
+		
 		$this->object->owner_guid = $new_owner_guid;
+		
+		// update the metadata
 		$this->updateMetadataOwnerGUID();
 		
 		// check access_id for the new container
 		$this->updateAccessID();
 	}
 	
+	/**
+	 * Cna the container be changed
+	 *
+	 * @return bool
+	 */
 	public function canChangeContainer() {
-		return $this->supported_options['change_container'];
+		return (bool) elgg_extract('change_container', $this->supported_options, false);
 	}
 	
+	/**
+	 * Change the container_guid of the entity
+	 *
+	 * @param int $new_container_guid the new container_guid
+	 *
+	 * @return void
+	 */
 	public function changeContainer($new_container_guid) {
+		
 		$this->object->container_guid = $new_container_guid;
 		
 		// check access_id for the new container
@@ -138,5 +191,4 @@ class Migrate {
 		// restore access restrictions
 		elgg_set_ignore_access($ia);
 	}
-		
 }

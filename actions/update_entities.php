@@ -30,7 +30,7 @@ foreach ($params as $guid => $options) {
 	}
 	
 	//validate entity
-	if (($entity->getSubtype() != $subtype) || (($entity->owner_guid !== $owner_guid) && ($entity->container_guid !== $container_guid))) {
+	if (($entity->getSubtype() !== $subtype) || (($entity->owner_guid !== $owner_guid) && ($entity->container_guid !== $container_guid))) {
 		$error_count++;
 		continue;
 	}
@@ -61,31 +61,24 @@ foreach ($params as $guid => $options) {
 		
 		$update_needed = true;
 		$owner_guid_changed = true;
-		
-// 		switch ($subtype) {
-// 			case 'page_top':
-				
-// 				// make sure the rlast revision is correct
-// 				entity_tools_check_page_revision($entity, $old_owner_guid);
-				
-// 				// move all subpages by the same user
-// 				entity_tools_update_subpages_owner_guid($entity, $old_owner_guid);
-// 				break;
-
 	}
 		
 	// check for container_guid
 	$new_container_guid = (int) elgg_extract('container_guid', $options, $entity->container_guid);
 	$old_container_guid = $entity->container_guid;
+	$container_change_needed = false;
 	
-	if ($owner_guid_changed && ($new_container_guid == $old_container_guid)) {
+	if ($owner_guid_changed && ($new_container_guid === $old_container_guid)) {
 		// owner changed... container stayed the same
 		if ($entity->getContainerEntity() instanceof \ElggUser) {
+			// container was the a user (same as owner)
+			// since owner changed to new user, the container needs to change too
+			$container_change_needed = true;
 			$new_container_guid = $new_owner_guid;
 		}
 	}
 		
-	if ($migrate->canChangeContainer() && ($new_container_guid !== $old_container_guid)) {
+	if (($migrate->canChangeContainer() || $container_change_needed) && ($new_container_guid !== $old_container_guid)) {
 		$migrate->changeContainer($new_container_guid);
 		
 		$update_needed = true;
@@ -98,22 +91,8 @@ foreach ($params as $guid => $options) {
 		
 // 		$update_needed = true;
 		
-// // 		if ($subtype == 'page_top') {
-// // 			// move all the subpages to the new container
-// // 			entity_tools_update_subpages_container_guid($entity);
-// // 		} elseif ($subtype == 'question') {
+// // 		if ($subtype == 'question') {
 // // 			entity_tools_update_answers_access($entity);
-// // 		}
-		
-// 	} elseif (($new_owner_guid != $old_owner_guid) && (get_user($old_container_guid) || get_user($new_container_guid))) {
-// 		// moved the entity to a different user, so also change container to this user
-// 		$entity->container_guid = $new_owner_guid;
-		
-// 		$update_needed = true;
-		
-// // 		if ($subtype == 'page_top') {
-// // 			// move all the subpages to the new container
-// // 			entity_tools_update_subpages_container_guid($entity);
 // // 		}
 		
 // 	}
