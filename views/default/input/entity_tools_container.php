@@ -42,7 +42,7 @@ if ($add_groups) {
 		'order_by' => 'ge.name',
 	];
 	
-	if (elgg_instanceof($page_owner, 'user')) {
+	if ($page_owner instanceof \ElggUser) {
 		// add the groups of the current owner
 		$owner_groups = $owner->getGroups($group_options);
 		if (!empty($owner_groups)) {
@@ -87,7 +87,10 @@ if ($add_groups) {
 					continue;
 				}
 				
-				$postfix = (!$group->isMember($owner)) ? '*' : '';
+				$postfix = '';
+				if ($owner instanceof \ElggUser && !$group->isMember($owner)) {
+					$postfix = '*';
+				}
 				
 				// add group
 				$result[elgg_echo('entity_tools:dropdown:label:my_groups')][$group->getGUID()] = $group->name . $postfix;
