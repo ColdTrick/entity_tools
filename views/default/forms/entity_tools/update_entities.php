@@ -8,10 +8,17 @@ echo elgg_view('output/longtext', [
 	'value' => elgg_echo('entity_tools:forms:owner_listing:description'),
 ]);
 
+$offset = abs((int) elgg_extract('offset', $vars, get_input('offset', 0)));
+// because you can say $vars['limit'] = 0
+if (!$limit = (int) elgg_extract('limit', $vars, elgg_get_config('default_limit'))) {
+	$limit = 10;
+}
+
 $entity_options = [
 	'type' => 'object',
 	'subtype' => $subtype,
-	'limit' => 50,
+	'offset' => $offset,
+	'limit' => $limit,
 ];
 if ($owner instanceof \ElggUser) {
 	$entity_options['owner_guid'] = $owner->guid;
@@ -59,6 +66,15 @@ if ($entities) {
 		'id' => 'entity-tools-listing-table',
 		'class' => 'elgg-table mbm',
 	], $rows);
+	
+	$entity_options['count'] = true;
+	$count = elgg_get_entities($entity_options);
+	echo elgg_view('navigation/pagination', [
+		'count' => $count,
+		'offset' => $offset,
+		'limit' => $limit,
+	]);
+
 } else {
 	echo elgg_echo('notfound');
 }
