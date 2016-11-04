@@ -1,13 +1,11 @@
 <?php
 /**
- * This file was created by Translation Editor v2.0.1
- * On 2015-04-02 15:54
+ * This file was created by Translation Editor v5.1
+ * On 2016-11-04 11:06
  */
 
 return array (
   'entity_tools:menu:owner_block:group' => 'Beheer groep content',
-  'entity_tools:page:container:title' => 'Beheer %s\'s: %s',
-  'entity_tools:forms:container_listing:description' => 'Hier kun je een aantal attributen beheren van de groep content. De kolom Aangemaakt stelt je in staat de creatiedatum aan te passen. De kolom Eigenaar stelt je in staat om het item over te dragen aan een andere gebruiker. De laatste kolom (Groep / Gebruiker) verteld waar het item zich bevind, of in een groep of in je persoonlijke overzicht en stelt je in staat dit aan te passen.',
   'entity_tools:settings:edit_access:group' => 'Site beheerders & groepseigenaren',
   'entity_tools:created' => 'Aangemaakt',
   'entity_tools:owner' => 'Eigenaar',
@@ -22,16 +20,8 @@ return array (
   'entity_tools:settings:edit_access' => 'Wie kan de eigenschappen van de content aanpassen',
   'entity_tools:settings:edit_access:admin' => 'Alleen site beheerders',
   'entity_tools:settings:edit_access:user' => 'Alle gebruikers',
-  'entity_tools:notify:transfer_owner:subject' => 'Er is een %s aan je overgedragen',
-  'entity_tools:notify:transfer_owner:message' => 'Beste %s,
-
-%s heeft een %s met de titel \'%s\' aan je overgedragen.
-
-Je kunt het hier bekijken: %s',
   'entity_tools:dropdown:label:current_value' => 'Huidige waarde',
   'entity_tools:dropdown:label:owner' => 'Huidige eigenaar',
-  'entity_tools:dropdown:label:myself' => 'Mijzelf',
-  'entity_tools:dropdown:label:friends' => 'Mijn vrienden',
   'entity_tools:dropdown:label:owner_groups' => 'Groepen van de eigenaar',
   'entity_tools:dropdown:label:my_groups' => 'Mijn groepen',
   'entity_tools:action:update_entities:error:input' => 'Niet alle vereiste velden zijn ingevuld, probeer het nognaals',
