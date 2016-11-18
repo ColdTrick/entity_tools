@@ -1,6 +1,15 @@
 Version history
 ===============
 
+3.0 (2016-11-18):
+
+- added: pagination on entities listing
+- added: support for discussions
+- added: support for pages plugin
+- added: support for thewire
+- changed: refactored migrate action into extendable classes
+- removed: questions code this is now handled in the questions plugin
+
 2.0 (2016-05-04):
 
 - added: support for group owners
