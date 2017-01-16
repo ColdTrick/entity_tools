@@ -36,7 +36,9 @@ if ($owner instanceof \ElggUser) {
 	]);
 }
 
-$entities = elgg_get_entities($entity_options);
+$entity_options = array_merge($entity_options, elgg_extract('entity_options', $vars, []));
+
+$entities = elgg_get_entities_from_relationship($entity_options);
 
 $supported = entity_tools_get_supported_entity_types();
 $class = $supported[$subtype];

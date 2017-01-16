@@ -41,6 +41,15 @@ class Migrate {
 	}
 	
 	/**
+	 * Return the object used in the migrate
+	 *
+	 * @return \ElggObject
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+	
+	/**
 	 * Can the entity be backdated
 	 *
 	 * @return bool
@@ -92,7 +101,7 @@ class Migrate {
 	}
 	
 	/**
-	 * Cna the container be changed
+	 * Can the container be changed
 	 *
 	 * @return bool
 	 */

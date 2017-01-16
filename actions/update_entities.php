@@ -90,7 +90,7 @@ foreach ($params as $guid => $options) {
 	}
 	
 	// save the entity
-	$entity->save();
+	$migrate->getObject()->save();
 	
 	// keep count
 	$update_count++;
