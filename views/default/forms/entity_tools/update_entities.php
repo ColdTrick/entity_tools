@@ -23,14 +23,16 @@ $entity_options = [
 if ($owner instanceof \ElggUser) {
 	$entity_options['owner_guid'] = $owner->guid;
 	
-	echo elgg_view_input('hidden', [
+	echo elgg_view_field([
+		'#type' => 'hidden',
 		'name' => 'owner_guid',
 		'value' => $owner->getGUID(),
 	]);
 } elseif ($owner instanceof \ElggGroup) {
 	$entity_options['container_guid'] = $owner->guid;
 	
-	echo elgg_view_input('hidden', [
+	echo elgg_view_field([
+		'#type' => 'hidden',
 		'name' => 'container_guid',
 		'value' => $owner->guid,
 	]);
@@ -85,7 +87,8 @@ if (elgg_get_page_owner_guid() != elgg_get_logged_in_user_guid()) {
 	echo elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('entity_tools:forms:owner_listing:disclaimer'));
 }
 
-echo elgg_view_input('hidden', [
+echo elgg_view_field([
+	'#type' => 'hidden',
 	'name' => 'subtype',
 	'value' => $subtype,
 ]);

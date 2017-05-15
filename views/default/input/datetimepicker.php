@@ -13,6 +13,7 @@ $class[] = 'elgg-input-datetime';
 $vars['class'] = $class;
 
 $defaults = [
+	'#type' => 'text',
 	'value' => '',
 	'disabled' => false,
 ];
@@ -23,7 +24,8 @@ $timestamp = elgg_extract('timestamp', $vars, false);
 unset($vars['timestamp']);
 
 if ($timestamp) {
-	echo elgg_view_input('hidden', [
+	echo elgg_view_field([
+		'#type' => 'hidden',
 		'name' => elgg_extract('name', $vars),
 		'value' => elgg_extract('value', $vars),
 	]);
@@ -39,4 +41,4 @@ if (is_numeric($vars['value'])) {
 	$vars['value'] = gmdate('Y-m-d H:i', elgg_extract('value', $vars));
 }
 
-echo elgg_view_input('text', $vars);
+echo elgg_view_field($vars);

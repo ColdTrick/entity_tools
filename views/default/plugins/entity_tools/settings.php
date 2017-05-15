@@ -2,9 +2,10 @@
 
 $plugin = elgg_extract('entity', $vars);
 
-echo elgg_view_input('select', [
+echo elgg_view_field([
+	'#type' => 'select',
+	'#label' => elgg_echo('entity_tools:settings:edit_access'),
 	'name' => 'params[edit_access]',
-	'label' => elgg_echo('entity_tools:settings:edit_access'),
 	'value' => $plugin->edit_access,
 	'options_values' => [
 		'admin' => elgg_echo('entity_tools:settings:edit_access:admin'),
