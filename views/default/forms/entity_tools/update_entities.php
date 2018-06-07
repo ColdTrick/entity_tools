@@ -1,7 +1,14 @@
 <?php
 
-$owner = elgg_extract('owner', $vars);
+$owner_guid = (int) elgg_extract('owner_guid', $vars);
+$container_guid = (int) elgg_extract('container_guid', $vars);
 $subtype = elgg_extract('subtype', $vars);
+
+echo elgg_view_field([
+	'#type' => 'hidden',
+	'name' => 'subtype',
+	'value' => $subtype,
+]);
 
 // show some description
 echo elgg_view('output/longtext', [
@@ -20,27 +27,29 @@ $entity_options = [
 	'offset' => $offset,
 	'limit' => $limit,
 ];
-if ($owner instanceof \ElggUser) {
-	$entity_options['owner_guid'] = $owner->guid;
+if (!empty($owner_guid)) {
+	$entity_options['owner_guid'] = $owner_guid;
 	
 	echo elgg_view_field([
 		'#type' => 'hidden',
 		'name' => 'owner_guid',
-		'value' => $owner->getGUID(),
+		'value' => $owner_guid,
 	]);
-} elseif ($owner instanceof \ElggGroup) {
-	$entity_options['container_guid'] = $owner->guid;
+}
+
+if (!empty($container_guid)) {
+	$entity_options['container_guid'] = $container_guid;
 	
 	echo elgg_view_field([
 		'#type' => 'hidden',
 		'name' => 'container_guid',
-		'value' => $owner->guid,
+		'value' => $container_guid,
 	]);
 }
 
 $entity_options = array_merge($entity_options, elgg_extract('entity_options', $vars, []));
 
-$entities = elgg_get_entities_from_relationship($entity_options);
+$entities = elgg_get_entities($entity_options);
 
 $supported = entity_tools_get_supported_entity_types();
 $class = $supported[$subtype];
@@ -49,27 +58,34 @@ if ($entities) {
 	// using the first entity to check supported options
 	$migrate = new $class($entities[0]);
 
-	$rows = '<tr>';
-	$rows .= '<th>' . elgg_echo('title') . '</th>';
+	$table_content = '';
+	
+	// header row
+	$row = [];
+	$row[] = elgg_format_element('th', [], elgg_echo('title'));
 	if ($migrate->canBackDate()) {
-		$rows .= '<th>' . elgg_echo('entity_tools:created') . '</th>';
+		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:created'));
 	}
 	if ($migrate->canChangeOwner()) {
-		$rows .= '<th>' . elgg_echo('entity_tools:owner') . '</th>';
+		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:owner'));
 	}
 	if ($migrate->canChangeContainer()) {
-		$rows .= '<th>' . elgg_echo('entity_tools:container') . '</th>';
+		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:container'));
 	}
-	$rows .= '</tr>';
+	$table_content .= elgg_format_element('thead', [], elgg_format_element('tr', [], implode(PHP_EOL, $row)));
 	
+	// content
+	$rows = [];
 	foreach ($entities as $entity) {
-		$rows .= elgg_view('entity_tools/listing/entity', ['entity' => $entity]);
+		$rows[] = elgg_view('entity_tools/listing/entity', ['entity' => $entity]);
 	}
+	$table_content .= elgg_format_element('tbody', [], implode(PHP_EOL, $rows));
 	
+	// draw table
 	echo elgg_format_element('table', [
 		'id' => 'entity-tools-listing-table',
 		'class' => 'elgg-table mbm',
-	], $rows);
+	], $table_content);
 	
 	$entity_options['count'] = true;
 	$count = elgg_get_entities($entity_options);
@@ -78,25 +94,18 @@ if ($entities) {
 		'offset' => $offset,
 		'limit' => $limit,
 	]);
-
+	
+	if (elgg_get_page_owner_guid() !== elgg_get_logged_in_user_guid()) {
+		echo elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('entity_tools:forms:owner_listing:disclaimer'));
+	}
 } else {
 	echo elgg_echo('notfound');
 }
 
-if (elgg_get_page_owner_guid() != elgg_get_logged_in_user_guid()) {
-	echo elgg_format_element('div', ['class' => 'elgg-subtext'], elgg_echo('entity_tools:forms:owner_listing:disclaimer'));
-}
-
-echo elgg_view_field([
-	'#type' => 'hidden',
-	'name' => 'subtype',
-	'value' => $subtype,
-]);
-
-echo '<div class="elgg-foot">';
-echo elgg_view('input/submit', [
+// form footer
+$footer = elgg_view_field([
+	'#type' => 'submit',
 	'value' => elgg_echo('save'),
-	'class' => 'elgg-button-submit',
 	'data-confirm' => elgg_echo('question:areyousure'),
 ]);
-echo '</div>';
+elgg_set_form_footer($footer);

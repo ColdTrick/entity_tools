@@ -1,7 +1,7 @@
 <?php
 
 $entity = elgg_extract('entity', $vars);
-if (empty($entity)) {
+if (!$entity instanceof ElggEntity) {
 	return;
 }
 
@@ -14,99 +14,125 @@ $add_users = (bool) elgg_extract('add_users', $vars, true);
 $add_groups = (bool) elgg_extract('add_groups', $vars, true);
 
 // log unique guids
-$temp_array = [$container->getGUID()];
+$temp_array = [$container->guid];
 
 // add the current container
-$result[elgg_echo('entity_tools:dropdown:label:current_value')] = [$container->getGUID() => $container->name];
+$options_values = [
+	[
+		'label' => elgg_echo('entity_tools:dropdown:label:current_value'),
+		'options' => [
+			[
+				'text' => $container->getDisplayName(),
+				'value' => $container->guid,
+			],
+		],
+	]
+];
 
 // allow moving to user
 if ($add_users) {
 	// add the owner (if not the current container)
-	if ($container->getGUID() != $owner->getGUID()) {
-		$result[elgg_echo('entity_tools:dropdown:label:owner')] = [$owner->getGUID() => $owner->name];
+	if ($container->guid !== $owner->guid) {
+		$options_values[] = [
+			'label' => elgg_echo('entity_tools:dropdown:label:owner'),
+			'options' => [
+				[
+					'text' => $owner->getDisplayName(),
+					'value' => $owner->guid,
+				],
+			],
+		];
 		
 		// add the guid to the filter
-		$temp_array[] = $owner->getGUID();
+		$temp_array[] = $owner->guid;
 	}
 }
 
 // allow moving to group
 if ($add_groups) {
 	// build default group options
-	$dbprefix = elgg_get_config('dbprefix');
 	$group_options = [
-		'limit' => false,
-		'joins' => [
-			"JOIN {$dbprefix}groups_entity ge ON e.guid = ge.guid",
+		'order_by_metadata' => [
+			'name' => 'name',
+			'direction' => 'ASC',
 		],
-		'order_by' => 'ge.name',
+		'limit' => false,
+		'batch' => true,
 	];
 	
+	// add the groups of the current (page)owner
 	if ($page_owner instanceof \ElggUser) {
-		// add the groups of the current owner
+		// make label
+		if ($owner->guid === $user->guid) {
+			$label = elgg_echo('entity_tools:dropdown:label:my_groups');
+		} else {
+			$label = elgg_echo('entity_tools:dropdown:label:owner_groups');
+		}
+		
+		$groups = [
+			'label' => $label,
+			'options' => [],
+		];
+		
 		$owner_groups = $owner->getGroups($group_options);
-		if (!empty($owner_groups)) {
-			if ($owner->getGUID() == $user->getGUID()) {
-				$label = elgg_echo('entity_tools:dropdown:label:my_groups');
-			} else {
-				$label = elgg_echo('entity_tools:dropdown:label:owner_groups');
+		/* @var $group ElggGroup */
+		foreach ($owner_groups as $group) {
+			// check if group not already proccessed
+			if (in_array($group->guid, $temp_array)) {
+				continue;
 			}
 			
-			// add label
-			$result[$label] = [];
+			// add group
+			$groups['options'][] = [
+				'text' => $group->getDisplayName(),
+				'value' => $group->guid,
+			];
 			
-			foreach ($owner_groups as $group) {
-				// check if group not already proccessed
-				if (in_array($group->getGUID(), $temp_array)) {
-					continue;
-				}
-				
-				// add group
-				$result[$label][$group->getGUID()] = $group->name;
-				
-				// add the guid to the filter
-				$temp_array[] = $group->getGUID();
-			}
-			
-			// check for empty label
-			if (empty($result[$label])) {
-				unset($result[$label]);
-			}
+			// add the guid to the filter
+			$temp_array[] = $group->getGUID();
+		}
+		
+		// check for empty label
+		if (!empty($groups['options'])) {
+			$options_values[] = $groups;
 		}
 	}
 	
 	// add the groups of the current user (if not the owner)
-	if ($page_owner->getGUID() !== $user->getGUID()) {
+	if ($page_owner->guid !== $user->guid) {
+		$groups = [
+			'label' => elgg_echo('entity_tools:dropdown:label:my_groups'),
+			'options' => [],
+		];
+		
 		$user_groups = $user->getGroups($group_options);
-		if (!empty($user_groups)) {
-			// add label
-			$result[elgg_echo('entity_tools:dropdown:label:my_groups')] = [];
-			
-			foreach ($user_groups as $group) {
-				if (in_array($group->getGUID(), $temp_array)) {
-					continue;
-				}
-				
-				$postfix = '';
-				if ($owner instanceof \ElggUser && !$group->isMember($owner)) {
-					$postfix = '*';
-				}
-				
-				// add group
-				$result[elgg_echo('entity_tools:dropdown:label:my_groups')][$group->getGUID()] = $group->name . $postfix;
-				
-				// add the guid to the filter
-				$temp_array[] = $group->getGUID();
+		/* @var $group ElggGroup */
+		foreach ($user_groups as $group) {
+			if (in_array($group->guid, $temp_array)) {
+				continue;
 			}
 			
-			// check for empty label
-			if (empty($result[elgg_echo('entity_tools:dropdown:label:my_groups')])) {
-				unset($result[elgg_echo('entity_tools:dropdown:label:my_groups')]);
+			$postfix = '';
+			if ($owner instanceof \ElggUser && !$group->isMember($owner)) {
+				$postfix = '*';
 			}
+			
+			// add group
+			$groups['options'][] = [
+				'text' => $group->getDisplayName() . $postfix,
+				'value' => $group->guid,
+			];
+			
+			// add the guid to the filter
+			$temp_array[] = $group->guid;
+		}
+		
+		// check for empty label
+		if (!empty($groups['options'])) {
+			$options_values[] = $groups;
 		}
 	}
 }
 
-$vars['options_values'] = $result;
-
-echo elgg_view('input/dropdown_label', $vars);
+$vars['options_values'] = $options_values;
+echo elgg_view('input/select', $vars);
