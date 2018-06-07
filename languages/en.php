@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
 	// general stuff
 	'entity_tools:created' => "Created",
@@ -17,6 +17,7 @@ return array(
 	
 	// page
 	'entity_tools:page:owner:title' => "Change %s's: %s",
+	'entity_tools:page:group:title' => "Change %s in %s",
 	
 	'entity_tools:forms:owner_listing:description' => "Here you can edit some of the properties of your content. The column Created allows you to edit when an item was created. The column Owner allows you to transfer an item to another user. The last column (Group / User) shows where the content is located, eighter in a group or in your personal listing and it allows you to change this.",
 	'entity_tools:forms:owner_listing:disclaimer' => "Please note that when assigning content to a group with a *, the current owner is not a member of that group and therefor can't access the content.",
@@ -39,4 +40,4 @@ return array(
 	'entity_tools:action:update_entities:error:not_all' => "Not all entities could be updated (%s succeeded, %s failed)",
 	'entity_tools:action:update_entities:success' => "Successfully updated %s entities",
 	
-);
+];
