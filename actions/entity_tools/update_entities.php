@@ -7,8 +7,7 @@ $container_guid = (int) get_input('container_guid');
 $params = get_input('params');
 
 if (empty($subtype) || (empty($owner_guid) && empty($container_guid)) || empty($params) || !is_array($params)) {
-	register_error(elgg_echo('entity_tools:action:update_entities:error:input'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('entity_tools:action:update_entities:error:input'));
 }
 
 $update_count = 0;
@@ -16,8 +15,7 @@ $error_count = 0;
 
 $supported = entity_tools_get_supported_entity_types();
 if (!array_key_exists($subtype, $supported)) {
-	register_error(elgg_echo('entity_tools:action:update_entities:error:input'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('entity_tools:action:update_entities:error:input'));
 }
 $class = $supported[$subtype];
 
@@ -37,9 +35,10 @@ foreach ($params as $guid => $options) {
 	
 	$migrate = new $class($entity);
 	$update_needed = false;
-
+	
 	// check for time_created
 	$new_time_created = (int) elgg_extract('time_created', $options, $entity->time_created);
+	$new_time_created = Elgg\Values::normalizeTimestamp($new_time_created);
 	if ($migrate->canBackDate() && ($new_time_created !== $entity->time_created)) {
 		$migrate->backDate($new_time_created);
 		
@@ -96,10 +95,8 @@ foreach ($params as $guid => $options) {
 	$update_count++;
 }
 
-if (empty($error_count)) {
-	system_message(elgg_echo('entity_tools:action:update_entities:success', [$update_count]));
-} else {
-	register_error(elgg_echo('entity_tools:action:update_entities:error:not_all', [$update_count, $error_count]));
+if (!empty($error_count)) {
+	return elgg_error_response(elgg_echo('entity_tools:action:update_entities:error:not_all', [$update_count, $error_count]));
 }
 
-forward(REFERER);
+return elgg_ok_response('', elgg_echo('entity_tools:action:update_entities:success', [$update_count]));

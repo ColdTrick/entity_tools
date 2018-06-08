@@ -17,7 +17,7 @@ if (empty($title)) {
 }
 
 $row_data[] = elgg_format_element('td', [], elgg_view('output/url', [
-	'text' => elgg_get_excerpt($title, 30),
+	'text' => elgg_get_excerpt($title, 100),
 	'title' => $title,
 	'href' => $entity->getURL(),
 ]));

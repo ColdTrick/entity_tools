@@ -2,12 +2,16 @@
 
 namespace ColdTrick\EntityTools;
 
-class Migrate {
+abstract class Migrate {
 	
-	protected $supported_options = [];
-		
+	/**
+	 * @var \ElggObject the entity being migrated
+	 */
 	protected $object;
 	
+	/**
+	 * @var array some of the original attributes of the entity before being changed
+	 */
 	protected $original_attributes = [];
 	
 	/**
@@ -18,25 +22,11 @@ class Migrate {
 	public function __construct(\ElggObject $object) {
 		
 		$this->object = $object;
+		
 		$this->original_attributes = [
 			'time_created' => $object->time_created,
 			'owner_guid' => $object->owner_guid,
 			'container_guid' => $object->container_guid,
-		];
-		
-		$this->setSupportedOptions();
-	}
-	
-	/**
-	 * Set the supported options for this migration
-	 *
-	 * @return void
-	 */
-	protected function setSupportedOptions() {
-		$this->supported_options = [
-			'backdate' => false,
-			'change_owner' => false,
-			'change_container' => false,
 		];
 	}
 	
@@ -54,9 +44,7 @@ class Migrate {
 	 *
 	 * @return bool
 	 */
-	public function canBackDate() {
-		return (bool) elgg_extract('backdate', $this->supported_options, false);
-	}
+	abstract public function canBackDate();
 	
 	/**
 	 * Backdate the entity
@@ -74,9 +62,7 @@ class Migrate {
 	 *
 	 * @return bool
 	 */
-	public function canChangeOwner() {
-		return (bool) elgg_extract('change_owner', $this->supported_options, false);
-	}
+	abstract public function canChangeOwner();
 	
 	/**
 	 * Changed the owner_guid of the entity
@@ -93,9 +79,6 @@ class Migrate {
 		
 		$this->object->owner_guid = $new_owner_guid;
 		
-		// update the metadata
-		$this->updateMetadataOwnerGUID();
-		
 		// check access_id for the new container
 		$this->updateAccessID();
 	}
@@ -105,9 +88,7 @@ class Migrate {
 	 *
 	 * @return bool
 	 */
-	public function canChangeContainer() {
-		return (bool) elgg_extract('change_container', $this->supported_options, false);
-	}
+	abstract public function canChangeContainer();
 	
 	/**
 	 * Change the container_guid of the entity
@@ -125,30 +106,14 @@ class Migrate {
 	}
 	
 	/**
-	 * Update metadata to owner guid of entity
-	 *
-	 * @return bool
-	 */
-	public function updateMetadataOwnerGUID() {
-		
-		$dbprefix = elgg_get_config('dbprefix');
-			
-		// set all metadata to the new owner
-		$query = "UPDATE {$dbprefix}metadata";
-		$query .= " SET owner_guid = {$this->object->owner_guid}";
-		$query .= " WHERE entity_guid = {$this->object->guid}";
-			
-		return update_data($query);
-	}
-	
-	/**
 	 * Update access_id of the entity
 	 *
 	 * @return void
 	 */
 	public function updateAccessID() {
 		
-		$access_id = (int) $this->object->access_id;
+		$old_access_id = (int) $this->object->access_id;
+		$new_access_id = ACCESS_PRIVATE;
 		
 		// ignore access restrictions
 		$ia = elgg_set_ignore_access(true);
@@ -160,40 +125,46 @@ class Migrate {
 		// check the old container to check access_id
 		if ($old_container instanceof \ElggGroup) {
 			// from a group
-			if ($access_id === (int) $old_container->group_acl) {
+			$acl = $old_container->getOwnedAccessCollection('group_acl');
+			if ($acl !== false && $old_access_id === (int) $acl->id) {
 				// with group access
 				if ($new_container instanceof \ElggGroup) {
 					// to a new group
 					// change access to the new group
-					$this->object->access_id = (int) $new_container->group_acl;
-				} else {
-					// new container is a user, so make the entity private
-					$this->object->access_id = ACCESS_PRIVATE;
+					$new_acl = $new_container->getOwnedAccessCollection('group_acl');
+					if ($new_acl !== false) {
+						$new_access_id = (int) $new_acl->id;
+					}
 				}
 			}
 		} else {
 			// from a user
 			$acls = [];
 			
-			$user_access_collections = get_user_access_collections($old_container_guid);
+			$user_access_collections = $old_container->getOwnedAccessCollections();
 			if (!empty($user_access_collections)) {
 				foreach ($user_access_collections as $acl) {
 					$acls[] = (int) $acl->id;
 				}
 			}
 			
-			if (in_array($access_id, $acls)) {
+			if (in_array($old_access_id, $acls)) {
 				// access was a private access collection
 				if ($new_container instanceof \ElggGroup) {
 					// moved to a group
 					// change access to the group
-					$this->object->access_id = (int) $new_container->group_acl;
-				} else {
-					// moved to different user
-					// change access to private
-					$this->object->access_id = ACCESS_PRIVATE;
+					$new_acl = $new_container->getOwnedAccessCollection('group_acl');
+					if ($new_acl !== false) {
+						$new_access_id = (int) $new_acl->id;
+					}
 				}
 			}
+		}
+		
+		// did the access_id change
+		if ($old_access_id !== $new_access_id) {
+			// store new value
+			$this->object->access_id = $new_access_id;
 		}
 		
 		// restore access restrictions

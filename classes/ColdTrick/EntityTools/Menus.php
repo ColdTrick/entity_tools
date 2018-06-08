@@ -3,43 +3,51 @@
 namespace ColdTrick\EntityTools;
 
 class Menus {
+	
 	/**
 	 * Add menu items to the filter menu
 	 *
-	 * @param string $hook   hook name
-	 * @param string $type   hook type
-	 * @param array  $return current return value
-	 * @param array  $params parameters
+	 * @param \Elgg\Hook $hook 'register', 'filter:entity_tools'
 	 *
-	 * @return array
+	 * @return void|\ElggMenuItem[]
 	 */
-	public static function registerFilter($hook, $type, $return, $params) {
-		if (!elgg_in_context('entities')) {
-			return;
-		}
-		
-		$page_owner = elgg_get_page_owner_entity();
-		
-		if (elgg_instanceof($page_owner, 'group')) {
-			$href_prefix = "entities/group/{$page_owner->getGUID()}/";
-		} else {
-			$href_prefix = "entities/owner/{$page_owner->username}/";
-		}
+	public static function registerFilter(\Elgg\Hook $hook) {
 		
 		$types = array_keys(entity_tools_get_supported_entity_types());
 		if (empty($types)) {
 			return;
 		}
 		
-		$return = [];
+		$page_owner = elgg_get_page_owner_entity();
+		
+		$generate_url = function($subtype) use ($page_owner) {
+			if ($page_owner instanceof \ElggGroup) {
+				return elgg_generate_url('entity_tools:group', [
+					'guid' => $page_owner->guid,
+					'subtype' => $subtype,
+				]);
+			} elseif ($page_owner instanceof \ElggUser) {
+				return elgg_generate_url('entity_tools:owner', [
+					'username' => $page_owner->username,
+					'subtype' => $subtype,
+				]);
+			}
+			
+			return false;
+		};
+		
+		$return = $hook->getValue();
+		$selected = $hook->getParam('filter_value');
+		
 		$priority = 10;
 		
 		foreach ($types as $type) {
 			$return[] = \ElggMenuItem::factory([
 				'name' => $type,
 				'text' => elgg_echo("item:object:{$type}"),
-				'href' => $href_prefix . $type,
+				'href' => $generate_url($type),
 				'priority' => $priority,
+				'selected' => $type === $selected,
 			]);
 			
 			$priority += 10;
@@ -49,63 +57,32 @@ class Menus {
 	}
 
 	/**
-	 * Set first item selected in filter menu
-	 *
-	 * @param string $hook   hook name
-	 * @param string $type   hook type
-	 * @param array  $return current return value
-	 * @param array  $params parameters
-	 *
-	 * @return array
-	 */
-	public static function prepareFilter($hook, $type, $return, $params) {
-		if (!elgg_in_context('entities')) {
-			return;
-		}
-		
-		if (!empty(elgg_extract('selected_item', $params))) {
-			return;
-		}
-		
-		foreach ($return as $section => $items) {
-			if (empty($items) || !is_array($items)) {
-				continue;
-			}
-			
-			foreach ($items as $index => $item) {
-				$item->setSelected(true);
-				break(2);
-			}
-		}
-		
-		return $return;
-	}
-
-	/**
 	 * Add menu item to user hover menu (admin section)
 	 *
-	 * @param string $hook   hook name
-	 * @param string $type   hook type
-	 * @param array  $return current return value
-	 * @param array  $params parameters
+	 * @param \Elgg\Hook $hook 'register', 'menu:user_hover'
 	 *
-	 * @return array
+	 * @return void|\ElggMenuItem[]
 	 */
-	public static function registerUserHover($hook, $type, $return, $params) {
+	public static function registerUserHover(\Elgg\Hook $hook) {
+		
 		if (!elgg_is_admin_logged_in()) {
 			return;
 		}
 		
-		$user = elgg_extract('entity', $params);
-		if (!($user instanceof \ElggUser)) {
+		$user = $hook->getEntityParam();
+		if (!$user instanceof \ElggUser) {
 			return;
 		}
+		
+		$return = $hook->getValue();
 		
 		// add the admin menu
 		$return[] = \ElggMenuItem::factory([
 			'name' => 'entity_tools:admin',
 			'text' => elgg_echo('entity_tools:menu:user_hover'),
-			'href' => 'entities/owner/' . $user->username,
+			'href' => elgg_generate_url('entity_tools:owner', [
+				'username' => $user->username,
+			]),
 			'section' => 'admin',
 			'priority' => 500,
 		]);
@@ -116,31 +93,33 @@ class Menus {
 	/**
 	 * Add menu item to user owner block
 	 *
-	 * @param string $hook   hook name
-	 * @param string $type   hook type
-	 * @param array  $return current return value
-	 * @param array  $params parameters
+	 * @param \Elgg\Hook $hook 'register', 'menu:owner_block'
 	 *
-	 * @return array
+	 * @return void|\ElggMenuItem[]
 	 */
-	public static function registerOwnerBlock($hook, $type, $return, $params) {
+	public static function registerOwnerBlock(\Elgg\Hook $hook) {
+		
 		$loggedin_user = elgg_get_logged_in_user_entity();
 		if (empty($loggedin_user)) {
 			return;
 		}
-	
-		$owner = elgg_extract('entity', $params);
-		$access_setting = elgg_get_plugin_setting('edit_access', 'entity_tools', 'admin');
-		if ($owner instanceof \ElggUser && ($access_setting == 'user')) {
+		
+		$return = $hook->getValue();
+		
+		$owner = $hook->getEntityParam();
+		$access_setting = elgg_get_plugin_setting('edit_access', 'entity_tools');
+		if ($owner instanceof \ElggUser && ($access_setting === 'user')) {
 			// depending on the plugin setting a user can go to the edit page
-			if ($loggedin_user->getGUID() != $owner->getGUID()) {
+			if ($loggedin_user->guid !== $owner->guid) {
 				return;
 			}
 			
 			$return[] = \ElggMenuItem::factory([
 				'name' => 'entity_tools:user',
 				'text' => elgg_echo('entity_tools:menu:owner_block'),
-				'href' => 'entities/owner/' . $owner->username,
+				'href' => elgg_generate_url('entity_tools:owner', [
+					'username' => $owner->username,
+				]),
 				'context' => 'profile',
 				'priority' => 500,
 			]);
@@ -151,7 +130,9 @@ class Menus {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'entity_tools:group',
 					'text' => elgg_echo('entity_tools:menu:owner_block:group'),
-					'href' => 'entities/group/' . $owner->getGUID(),
+					'href' => elgg_generate_url('entity_tools:group', [
+						'guid' => $owner->guid,
+					]),
 				]);
 			}
 		}

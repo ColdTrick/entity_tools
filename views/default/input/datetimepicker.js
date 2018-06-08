@@ -1,19 +1,19 @@
-define(['jquery'], function ($) {
+define(function (require) {
+	
+	var $ = require('jquery');
+	require('jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min');
+	require('jqueryui-timepicker-addon/jquery-ui-sliderAccess');
+	
 	if ($('.elgg-input-datetime').length) {
 		$('.elgg-input-datetime').datetimepicker({
 			dateFormat: 'yy-mm-dd',
-			timeFormat: 'hh:mm',
-			ampm: false,
+			timeFormat: 'H:mm',
 			maxDate: 0,
-			hideIfNoPrevNext: true,
 			onSelect: function(dateText) {
+				
 				if ($(this).is('.elgg-input-timestamp')) {
-					// convert to unix timestamp
-					var textParts = dateText.split(" ");
-					var dateParts = textParts[0].split("-");
-					var timeParts = textParts[1].split(":");
-	
-					var timestamp = Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]);
+					var dt = new Date(dateText);
+					var timestamp = dt.getTime();
 					
 					timestamp = timestamp / 1000;
 	

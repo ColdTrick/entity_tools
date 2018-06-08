@@ -4,8 +4,42 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76dc62220cf3df6855c879ed7898ea74",
+    "content-hash": "b0a46036f42b67b99fd01fb837ed38fa",
     "packages": [
+        {
+            "name": "bower-asset/jqueryui-timepicker-addon",
+            "version": "v1.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/trentrichardson/jQuery-Timepicker-Addon.git",
+                "reference": "397d6ed930649ea7224123d140d341e9f3ffaba6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/trentrichardson/jQuery-Timepicker-Addon/zipball/397d6ed930649ea7224123d140d341e9f3ffaba6",
+                "reference": "397d6ed930649ea7224123d140d341e9f3ffaba6",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/jquery-ui-timepicker-addon.js",
+                    "dist/jquery-ui-timepicker-addon.css"
+                ],
+                "bower-asset-ignore": [
+                    "/CONTRIBUTING.md",
+                    "/Gruntfile.js",
+                    "/README.md",
+                    "/composer.json",
+                    "/jquery-ui-timepicker-addon.json",
+                    "/lib",
+                    "/package.json",
+                    "/src",
+                    "/test"
+                ]
+            },
+            "time": "2016-04-20T19:25:34+00:00"
+        },
         {
             "name": "composer/installers",
             "version": "v1.5.0",

@@ -1,24 +1,41 @@
 <?php
 
-namespace ColdTrick\EntityTools;
+namespace ColdTrick\EntityTools\Migrate;
 
-class MigratePages extends Migrate {
+use ColdTrick\EntityTools\Migrate;
+
+class Pages extends Migrate {
 	
 	/**
-	 * {@inheritDoc}
-	 * @see \ColdTrick\EntityTools\Migrate::setSupportedOptions()
+	 * @param \ElggPage $object the page to migrate
 	 */
-	protected function setSupportedOptions() {
-		$this->supported_options = [
-			'backdate' => true,
-			'change_owner' => true,
-			'change_container' => true,
-		];
+	public function __construct(\ElggPage $object) {
+		parent::__construct($object);
 	}
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \ColdTrick\EntityTools\Migrate::changeOwner()
+	 */
+	public function canBackDate() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public function canChangeOwner() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public function canChangeContainer() {
+		return true;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	public function changeOwner($new_owner_guid) {
 		
@@ -34,7 +51,6 @@ class MigratePages extends Migrate {
 	
 	/**
 	 * {@inheritDoc}
-	 * @see \ColdTrick\EntityTools\Migrate::changeContainer()
 	 */
 	public function changeContainer($new_container_guid) {
 		
@@ -52,6 +68,7 @@ class MigratePages extends Migrate {
 	 */
 	protected function moveLastRevision() {
 		
+		/* @var $entity \ElggPage */
 		$entity = $this->object;
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		
@@ -65,15 +82,16 @@ class MigratePages extends Migrate {
 			return;
 		}
 		
+		/* @var $annotation \ElggAnnotation */
 		$annotation = $annotations[0];
 		
 		// is the last revision owned by the old owner
-		if ((int) $annotation->getOwnerGUID() !== $old_owner_guid) {
+		if ((int) $annotation->owner_guid !== $old_owner_guid) {
 			return;
 		}
 		
 		// update it to the new owner
-		$annotation->owner_guid = $entity->getOwnerGUID();
+		$annotation->owner_guid = $entity->owner_guid;
 		
 		$annotation->save();
 	}
@@ -87,10 +105,8 @@ class MigratePages extends Migrate {
 	 */
 	protected function updateSubpagesOwnerGUID($new_owner_guid) {
 		
+		/* @var $entity \ElggPage */
 		$entity = $this->object;
-		if (!elgg_instanceof($entity, 'object', 'page_top')) {
-			return;
-		}
 		
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		$new_owner_guid = (int) $new_owner_guid;
@@ -101,7 +117,7 @@ class MigratePages extends Migrate {
 		$subpages = $this->getOwnedSubPages($entity);
 		foreach ($subpages as $subpage) {
 			
-			$migrate = new MigratePages($subpage);
+			$migrate = new static($subpage);
 			$migrate->changeOwner($new_owner_guid);
 			
 			$subpage->save();
@@ -111,11 +127,11 @@ class MigratePages extends Migrate {
 	/**
 	 * Get all the subpages of a page owner by the original owner
 	 *
-	 * @param \ElggObject $entity the entity to get subpages for
+	 * @param \ElggPage $entity the entity to get subpages for
 	 *
-	 * @return \ElggObject[]
+	 * @return \ElggPage[]
 	 */
-	protected function getOwnedSubPages(\ElggObject $entity) {
+	protected function getOwnedSubPages(\ElggPage $entity) {
 		
 		$result = [];
 		
@@ -124,16 +140,17 @@ class MigratePages extends Migrate {
 		// ignore access for this part
 		$ia = elgg_set_ignore_access(true);
 		
-		$batch = new \ElggBatch('elgg_get_entities_from_metadata', [
+		$batch = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => 'page',
 			'limit' => false,
 			'metadata_name_value_pairs' => [
 				'name' => 'parent_guid',
-				'value' => $entity->getGUID(),
+				'value' => $entity->guid,
 			],
+			'batch' => true,
 		]);
-		/* @var $subpage \ElggObject */
+		/* @var $subpage \ElggPage */
 		foreach ($batch as $subpage) {
 			
 			if ($subpage->owner_guid === (int) $old_owner_guid) {
@@ -165,19 +182,20 @@ class MigratePages extends Migrate {
 		// ignore access for this part
 		$ia = elgg_set_ignore_access(true);
 		
-		$batch = new \ElggBatch('elgg_get_entities_from_metadata', [
+		$batch = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => 'page',
 			'limit' => false,
 			'metadata_name_value_pairs' => [
 				'name' => 'parent_guid',
-				'value' => $this->object->getGUID(),
+				'value' => $this->object->guid,
 			],
+			'batch' => true,
 		]);
 		/* @var $subpage \ElggObject */
 		foreach ($batch as $subpage) {
 			
-			$migrate = new MigratePages($subpage);
+			$migrate = new static($subpage);
 			$migrate->changeContainer($new_container_guid);
 			
 			$subpage->save();

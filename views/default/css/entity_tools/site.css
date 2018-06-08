@@ -11,7 +11,7 @@
 	.elgg-input-datetime,
 	.elgg-input-dropdown,
 	.elgg-user-picker {
-		width: 140px;
+		width: 200px;
 		white-space: nowrap;
 	}
 
@@ -24,6 +24,12 @@
 			border: none;
 			margin-top: 0;
 			padding: 0.5rem;
+			
+			.elgg-body {
+				max-width: 175px;
+				text-overflow: ellipsis;
+				overflow: hidden;
+			}
 		}
 	}
 }

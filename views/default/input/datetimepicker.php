@@ -1,9 +1,7 @@
 <?php
 
-elgg_load_js('jquery.timepicker');
-elgg_load_js('jquery.slider');
 elgg_load_css('jquery.timepicker');
-elgg_load_css('jquery.slider');
+elgg_load_css('jqueryui');
 
 elgg_require_js('input/datetimepicker');
 
@@ -19,10 +17,25 @@ $vars = array_merge($defaults, $vars);
 $timestamp = elgg_extract('timestamp', $vars, false);
 unset($vars['timestamp']);
 
+$value = elgg_extract('value', $vars);
+
+$value_date = '';
+$value_timestamp = '';
+
+if ($value) {
+	try {
+		$dt = \Elgg\Values::normalizeTime($value);
+
+		$value_timestamp = $dt->getTimestamp();
+		$value_date = date('Y-m-d H:i', $value_timestamp);
+	} catch (DataFormatException $ex) {
+	}
+}
+
 if ($timestamp) {
-	echo elgg_view_('input/hidden', [
+	echo elgg_view('input/hidden', [
 		'name' => elgg_extract('name', $vars),
-		'value' => elgg_extract('value', $vars),
+		'value' => $value_timestamp,
 	]);
 
 	$vars['class'][] = 'elgg-input-timestamp';
@@ -31,9 +44,6 @@ if ($timestamp) {
 	unset($vars['internalname']);
 }
 
-// convert timestamps to text for display
-if (is_numeric($vars['value'])) {
-	$vars['value'] = gmdate('Y-m-d H:i', elgg_extract('value', $vars));
-}
+$vars['value'] = $value_date;
 
 echo elgg_view('input/text', $vars);

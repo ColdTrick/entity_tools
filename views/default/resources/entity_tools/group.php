@@ -19,6 +19,12 @@ if (empty($subtype)) {
 if (!in_array($subtype, $supported_types)) {
 	throw new GatekeeperException(elgg_echo('entity_tools:error:unsupported_subtype', [$subtype]));
 }
+
+elgg_push_breadcrumb($page_owner->getDisplayName(), $page_owner->getURL());
+elgg_push_breadcrumb(elgg_echo('entity_tools:menu:owner_block:group'), elgg_generate_url('entity_tools:group', [
+	'guid' => $page_owner->guid
+]));
+elgg_push_breadcrumb(elgg_echo("item:object:{$subtype}"), false);
 	
 $title_text = elgg_echo('entity_tools:page:group:title', [
 	elgg_echo("item:object:{$subtype}"),
@@ -34,6 +40,9 @@ $content = elgg_view_form('entity_tools/update_entities', [], [
 $page_data = elgg_view_layout('default', [
 	'title' => $title_text,
 	'content' => $content,
+	'filter_id' => 'entity_tools',
+	'filter_value' => $subtype,
+	'sidebar' => false,
 ]);
 
 // show page
