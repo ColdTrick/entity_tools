@@ -3,7 +3,7 @@
 use ColdTrick\EntityTools\Bootstrap;
 use ColdTrick\EntityTools\Gatekeeper;
 
-require_once(__DIR__ . '\lib\functions.php');
+require_once(__DIR__ . '/lib/functions.php');
 
 $composer_path = '';
 if (is_dir(__DIR__ . '/vendor')) {
