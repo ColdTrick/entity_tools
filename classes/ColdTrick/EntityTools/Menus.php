@@ -83,6 +83,7 @@ class Menus {
 			'href' => elgg_generate_url('entity_tools:owner', [
 				'username' => $user->username,
 			]),
+			'icon' => 'archive',
 			'section' => 'admin',
 			'priority' => 500,
 		]);
