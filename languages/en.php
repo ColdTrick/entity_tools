@@ -7,7 +7,6 @@ return [
 	'entity_tools:owner' => "Owner",
 	'entity_tools:container' => "Group / User",
 	
-	'entity_tools:error:check_edit_access' => "You're not allowed to edit entities",
 	'entity_tools:error:unsupported_subtype' => "You're trying to edit a unsupported entity subtype (%s)",
 	
 	// menu

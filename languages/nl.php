@@ -1,16 +1,16 @@
 <?php
 /**
- * This file was created by Translation Editor v5.1
- * On 2016-11-04 11:06
+ * This file was created by Translation Editor v7.0-beta
+ * On 2018-12-14 14:17
  */
 
 return array (
+  'entity_tools:page:group:title' => 'Wijzig %s in %s',
   'entity_tools:menu:owner_block:group' => 'Beheer groep content',
   'entity_tools:settings:edit_access:group' => 'Site beheerders & groepseigenaren',
   'entity_tools:created' => 'Aangemaakt',
   'entity_tools:owner' => 'Eigenaar',
   'entity_tools:container' => 'Groep / Gebruiker',
-  'entity_tools:error:check_edit_access' => 'Je mag geen content beheren',
   'entity_tools:error:unsupported_subtype' => 'Je probeert een niet ondersteund type content the beheren (%s)',
   'entity_tools:menu:user_hover' => 'Content beheer',
   'entity_tools:menu:owner_block' => 'Content beheer',
