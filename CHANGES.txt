@@ -1,6 +1,14 @@
 Version history
 ===============
 
+5.0 (2019-03-27):
+
+- changed: increased minimal Elgg version requirement to 3.0
+- changed: moved start.php to Bootstrap class
+- changed: rework for Elgg 3.0
+- changed: rewrite for Elgg 3.0
+- fixed: use correct slashes for include path
+
 4.0 (2017-05-30):
 
 - changed: updated requirement to Elgg 2.3
