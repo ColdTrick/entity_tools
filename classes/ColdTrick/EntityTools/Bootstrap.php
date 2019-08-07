@@ -11,10 +11,6 @@ class Bootstrap extends DefaultPluginBootstrap {
 	 */
 	public function init() {
 		
-		// register JS / CSS
-		elgg_register_css('jquery.timepicker', elgg_get_simplecache_url('jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min.css'));
-		elgg_register_css('jqueryui', elgg_get_simplecache_url('jqueryui/css/jquery-ui.min.css'));
-		
 		elgg_extend_view('css/elgg', 'css/entity_tools/site.css');
 		
 		// register plugin hooks

@@ -1,7 +1,7 @@
 <?php
 
-elgg_load_css('jquery.timepicker');
-elgg_load_css('jqueryui');
+elgg_require_css('jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min.css');
+elgg_require_css('jqueryui/css/jquery-ui.min.css');
 
 elgg_require_js('input/datetimepicker');
 
