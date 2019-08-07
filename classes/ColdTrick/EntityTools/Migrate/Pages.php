@@ -133,41 +133,37 @@ class Pages extends Migrate {
 	 */
 	protected function getOwnedSubPages(\ElggPage $entity) {
 		
-		$result = [];
-		
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		
-		// ignore access for this part
-		$ia = elgg_set_ignore_access(true);
-		
-		$batch = elgg_get_entities([
-			'type' => 'object',
-			'subtype' => 'page',
-			'limit' => false,
-			'metadata_name_value_pairs' => [
-				'name' => 'parent_guid',
-				'value' => $entity->guid,
-			],
-			'batch' => true,
-		]);
-		/* @var $subpage \ElggPage */
-		foreach ($batch as $subpage) {
+		return elgg_call(ELGG_IGNORE_ACCESS, function() use ($entity, $old_owner_guid) {
+			$result = [];
 			
-			if ($subpage->owner_guid === (int) $old_owner_guid) {
-				$result[] = $subpage;
+			$batch = elgg_get_entities([
+				'type' => 'object',
+				'subtype' => 'page',
+				'limit' => false,
+				'metadata_name_value_pairs' => [
+					'name' => 'parent_guid',
+					'value' => $entity->guid,
+				],
+				'batch' => true,
+			]);
+			/* @var $subpage \ElggPage */
+			foreach ($batch as $subpage) {
+				
+				if ($subpage->owner_guid === $old_owner_guid) {
+					$result[] = $subpage;
+				}
+				
+				// add children
+				$children = $this->getOwnedSubPages($subpage);
+				if (!empty($children)) {
+					$result = array_merge($result, $children);
+				}
 			}
 			
-			// add children
-			$children = $this->getOwnedSubPages($subpage);
-			if (!empty($children)) {
-				$result = array_merge($result, $children);
-			}
-		}
-		
-		// restore access
-		elgg_set_ignore_access($ia);
-		
-		return $result;
+			return $result;
+		});
 	}
 	
 	/**
@@ -178,30 +174,27 @@ class Pages extends Migrate {
 	 * @return void
 	 */
 	protected function moveSubpages($new_container_guid) {
-		
 		// ignore access for this part
-		$ia = elgg_set_ignore_access(true);
-		
-		$batch = elgg_get_entities([
-			'type' => 'object',
-			'subtype' => 'page',
-			'limit' => false,
-			'metadata_name_value_pairs' => [
-				'name' => 'parent_guid',
-				'value' => $this->object->guid,
-			],
-			'batch' => true,
-		]);
-		/* @var $subpage \ElggObject */
-		foreach ($batch as $subpage) {
+		elgg_call(ELGG_IGNORE_ACCESS, function() use ($new_container_guid) {
+			$batch = elgg_get_entities([
+				'type' => 'object',
+				'subtype' => 'page',
+				'limit' => false,
+				'metadata_name_value_pairs' => [
+					'name' => 'parent_guid',
+					'value' => $this->object->guid,
+				],
+				'batch' => true,
+			]);
 			
-			$migrate = new static($subpage);
-			$migrate->changeContainer($new_container_guid);
-			
-			$subpage->save();
-		}
-		
-		// restore access
-		elgg_set_ignore_access($ia);
+			/* @var $subpage \ElggPage */
+			foreach ($batch as $subpage) {
+				
+				$migrate = new static($subpage);
+				$migrate->changeContainer($new_container_guid);
+				
+				$subpage->save();
+			}
+		});
 	}
 }
