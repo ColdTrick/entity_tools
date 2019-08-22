@@ -1,6 +1,11 @@
 Version history
 ===============
 
+6.0 (2019-08-22):
+
+- changed: css loading now uses elgg_require_css
+- changed: increased minimal Elgg version to 3.1
+
 5.0 (2019-03-27):
 
 - changed: increased minimal Elgg version requirement to 3.0
