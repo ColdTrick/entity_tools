@@ -1,10 +1,12 @@
 <?php
 /**
- * This file was created by Translation Editor v7.0-beta
- * On 2018-12-14 14:17
+ * This file was created by Translation Editor v7.0.4
+ * On 2020-05-15 12:04
  */
 
 return array (
+  'entity_tools:menu:admin' => 'Content beheer',
+  'entity_tools:dropdown:label:site' => 'Site',
   'entity_tools:page:group:title' => 'Wijzig %s in %s',
   'entity_tools:menu:owner_block:group' => 'Beheer groep content',
   'entity_tools:settings:edit_access:group' => 'Site beheerders & groepseigenaren',

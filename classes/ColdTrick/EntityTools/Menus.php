@@ -31,6 +31,10 @@ class Menus {
 					'username' => $page_owner->username,
 					'subtype' => $subtype,
 				]);
+			} else {
+				return elgg_generate_url('entity_tools:site', [
+					'subtype' => $subtype,
+				]);
 			}
 			
 			return false;
@@ -137,6 +141,32 @@ class Menus {
 				]);
 			}
 		}
+		
+		return $return;
+	}
+	
+	/**
+	 * Add menu items to the admin page menu
+	 *
+	 * @param \Elgg\Hook $hook 'register', 'menu:page'
+	 *
+	 * @return void|\ElggMenuItem[]
+	 */
+	public static function registerAdmin(\Elgg\Hook $hook) {
+		
+		if (!elgg_is_admin_logged_in() || !elgg_in_context('admin')) {
+			return;
+		}
+		
+		$return = $hook->getValue();
+		
+		$return[] = \ElggMenuItem::factory([
+			'name' => 'entity_tools',
+			'href' => elgg_generate_url('entity_tools:site'),
+			'text' => elgg_echo('entity_tools:menu:admin'),
+			'parent_name' => 'administer_utilities',
+			'section' => 'administer',
+		]);
 		
 		return $return;
 	}

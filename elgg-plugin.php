@@ -16,6 +16,13 @@ return [
 		'entity_tools/update_entities' => [],
 	],
 	'routes' => [
+		'entity_tools:site' => [
+			'path' => 'entities/site/{subtype?}',
+			'resource' => 'entity_tools/site',
+			'middleware' => [
+				Gatekeeper::class,
+			],
+		],
 		'entity_tools:owner' => [
 			'path' => 'entities/owner/{username}/{subtype?}',
 			'resource' => 'entity_tools/owner',

@@ -12,6 +12,7 @@ return [
 	// menu
 	'entity_tools:menu:user_hover' => "Manage content",
 	'entity_tools:menu:owner_block' => "Manage content",
+	'entity_tools:menu:admin' => "Manage content",
 	'entity_tools:menu:owner_block:group' => "Manage group content",
 	
 	// page
@@ -29,6 +30,7 @@ return [
 	
 	// fancy dropdown labels
 	'entity_tools:dropdown:label:current_value' => "Current value",
+	'entity_tools:dropdown:label:site' => "Site",
 	'entity_tools:dropdown:label:owner' => "Current owner",
 	'entity_tools:dropdown:label:owner_groups' => "Owner groups",
 	'entity_tools:dropdown:label:my_groups' => "My groups",

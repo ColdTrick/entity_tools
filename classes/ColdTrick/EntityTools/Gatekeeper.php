@@ -30,7 +30,7 @@ class Gatekeeper extends ElggGatekeeper {
 		
 		$plugin_setting = elgg_get_plugin_setting('edit_access', 'entity_tools');
 		$page_owner = elgg_get_page_owner_entity();
-		if (!$page_owner instanceof \ElggUser && !$page_owner instanceof \ElggGroup) {
+		if (!$page_owner instanceof \ElggUser && !$page_owner instanceof \ElggGroup && !$page_owner instanceof \ElggSite) {
 			// can only handler user/group pages
 			throw new EntityNotFoundException();
 		}
@@ -46,6 +46,10 @@ class Gatekeeper extends ElggGatekeeper {
 					throw new EntityPermissionsException();
 				}
 				break;
+			default:
+				if (!elgg_is_admin_logged_in()) {
+					throw new EntityPermissionsException();
+				}
 		}
 	}
 }

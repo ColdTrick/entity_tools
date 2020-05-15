@@ -9,12 +9,19 @@ $page_owner = elgg_get_page_owner_entity();
 $owner = $entity->getOwnerEntity();
 $container = $entity->getContainerEntity();
 $user = elgg_get_logged_in_user_entity();
+$site = elgg_get_site_entity();
 
+$add_site = (bool) elgg_extract('add_site', $vars, false);
 $add_users = (bool) elgg_extract('add_users', $vars, true);
 $add_groups = (bool) elgg_extract('add_groups', $vars, true);
 
 // log unique guids
 $temp_array = [$container->guid];
+
+$container_display_name = $container->getDisplayName();
+if ($container instanceof \ElggSite) {
+	$container_display_name = elgg_echo('item:site:site') . ': ' . $container_display_name;
+}
 
 // add the current container
 $options_values = [
@@ -22,12 +29,31 @@ $options_values = [
 		'label' => elgg_echo('entity_tools:dropdown:label:current_value'),
 		'options' => [
 			[
-				'text' => $container->getDisplayName(),
+				'text' => $container_display_name,
 				'value' => $container->guid,
 			],
 		],
 	]
 ];
+
+// allow moving to site
+if ($add_site) {
+	// add the owner (if not the current container)
+	if ($container->guid !== $site->guid) {
+		$options_values[] = [
+			'label' => elgg_echo('entity_tools:dropdown:label:site'),
+			'options' => [
+				[
+					'text' => $site->getDisplayName(),
+					'value' => $site->guid,
+				],
+			],
+		];
+		
+		// add the guid to the filter
+		$temp_array[] = $site->guid;
+	}
+}
 
 // allow moving to user
 if ($add_users) {
@@ -99,7 +125,7 @@ if ($add_groups) {
 	}
 	
 	// add the groups of the current user (if not the owner)
-	if ($page_owner->guid !== $user->guid) {
+	if (empty($page_owner) || ($page_owner->guid !== $user->guid)) {
 		$groups = [
 			'label' => elgg_echo('entity_tools:dropdown:label:my_groups'),
 			'options' => [],
