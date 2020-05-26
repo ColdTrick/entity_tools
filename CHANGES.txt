@@ -1,6 +1,10 @@
 Version history
 ===============
 
+6.1 (2020-05-26):
+
+- added: pages to manage site owned content
+
 6.0 (2019-08-22):
 
 - changed: css loading now uses elgg_require_css
