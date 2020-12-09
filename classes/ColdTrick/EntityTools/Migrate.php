@@ -115,7 +115,11 @@ abstract class Migrate {
 		elgg_call(ELGG_IGNORE_ACCESS, function() {
 			
 			$old_access_id = (int) $this->object->access_id;
-			$new_access_id = ACCESS_PRIVATE;
+			$new_access_id = $old_access_id;
+			if (!in_array($new_access_id, [ACCESS_PUBLIC, ACCESS_LOGGED_IN, ACCESS_PRIVATE])) {
+				// some acl, so start from the beginning
+				$new_access_id = ACCESS_PRIVATE;
+			}
 			
 			$old_container_guid = (int) $this->original_attributes['container_guid'];
 			$old_container = get_entity($old_container_guid);
