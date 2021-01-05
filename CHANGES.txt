@@ -1,6 +1,10 @@
 Version history
 ===============
 
+6.1.1 (2021-01-05):
+
+- fixed: retain PUBLIC and LOGGED_IN access during content migration
+
 6.1 (2020-05-26):
 
 - added: pages to manage site owned content
