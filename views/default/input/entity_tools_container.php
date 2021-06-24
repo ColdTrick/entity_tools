@@ -115,7 +115,7 @@ if ($add_groups) {
 			];
 			
 			// add the guid to the filter
-			$temp_array[] = $group->getGUID();
+			$temp_array[] = $group->guid;
 		}
 		
 		// check for empty label

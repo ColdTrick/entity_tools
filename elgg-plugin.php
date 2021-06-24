@@ -1,6 +1,5 @@
 <?php
 
-use ColdTrick\EntityTools\Bootstrap;
 use ColdTrick\EntityTools\Gatekeeper;
 
 require_once(__DIR__ . '/lib/functions.php');
@@ -11,9 +10,27 @@ if (is_dir(__DIR__ . '/vendor')) {
 }
 
 return [
-	'bootstrap' => Bootstrap::class,
+	'plugin' => [
+		'version' => '6.1.1',
+	],
 	'actions' => [
 		'entity_tools/update_entities' => [],
+	],
+	'hooks' => [
+		'register' => [
+			'menu:filter:entity_tools' => [
+				'\ColdTrick\EntityTools\Menus::registerFilter' => []
+			],
+			'menu:user_hover' => [
+				'\ColdTrick\EntityTools\Menus::registerUserHover' => []
+			],
+			'menu:owner_block' => [
+				'\ColdTrick\EntityTools\Menus::registerOwnerBlock' => []
+			],
+			'menu:page' => [
+				'\ColdTrick\EntityTools\Menus::registerAdmin' => []
+			],
+		],
 	],
 	'routes' => [
 		'entity_tools:site' => [
@@ -43,8 +60,14 @@ return [
 	],
 	'views' => [
 		'default' => [
-			'jqueryui-timepicker-addon/' => $composer_path . 'vendor/bower-asset/jqueryui-timepicker-addon/dist/',
-			'jqueryui/css/' => 'vendor/bower-asset/jquery-ui/themes/base/',
+			'jqueryui-timepicker-addon/' => $composer_path . 'vendor/npm-asset/jquery-ui-timepicker-addon/dist/',
+			'jqueryui/css/' => 'vendor/npm-asset/components-jqueryui/themes/base/',
+			'jquery-ui.js' => 'vendor/npm-asset/components-jqueryui/jquery-ui.min.js',
+		],
+	],
+	'view_extensions' => [
+		'elgg.css' => [
+			'entity_tools/site.css' => [],
 		],
 	],
 ];

@@ -2,12 +2,12 @@
 
 namespace ColdTrick\EntityTools;
 
-use Elgg\HttpException;
+use Elgg\Exceptions\HttpException;
+use Elgg\Exceptions\Http\EntityNotFoundException;
+use Elgg\Exceptions\Http\GatekeeperException;
+use Elgg\Exceptions\Http\EntityPermissionsException;
 use Elgg\Request;
 use Elgg\Router\Middleware\Gatekeeper as ElggGatekeeper;
-use Elgg\EntityNotFoundException;
-use Elgg\GatekeeperException;
-use Elgg\EntityPermissionsException;
 
 class Gatekeeper extends ElggGatekeeper {
 	
@@ -50,6 +50,7 @@ class Gatekeeper extends ElggGatekeeper {
 				if (!elgg_is_admin_logged_in()) {
 					throw new EntityPermissionsException();
 				}
+				break;
 		}
 	}
 }

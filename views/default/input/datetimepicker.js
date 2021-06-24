@@ -1,8 +1,4 @@
-define(function (require) {
-	
-	var $ = require('jquery');
-	require('jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min');
-	require('jqueryui-timepicker-addon/jquery-ui-sliderAccess');
+define(['jquery', 'jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min', 'jqueryui-timepicker-addon/jquery-ui-sliderAccess'], function ($) {
 	
 	if ($('.elgg-input-datetime').length) {
 		$('.elgg-input-datetime').datetimepicker({

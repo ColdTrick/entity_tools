@@ -100,6 +100,7 @@ if ($entities) {
 	}
 } else {
 	echo elgg_echo('notfound');
+	return;
 }
 
 // form footer

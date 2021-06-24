@@ -1,6 +1,7 @@
 {
 	"name": "coldtrick/entity_tools",
-	"description": "Do advanced editing of the entities in your Elgg database",
+	"description": "Advanced editing of entities in your Elgg database",
+	"homepage": "https://www.coldtrick.com",
 	"type": "elgg-plugin",
 	"keywords": ["elgg", "plugin", "database"],
 	"license": "GPL-2.0-only",
@@ -10,14 +11,14 @@
 	},
 	"require": {
 		"composer/installers": "^1.0.8",
-		"bower-asset/jqueryui-timepicker-addon": "~1.6.3"
+		"npm-asset/jquery-ui-timepicker-addon": "~1.6.3"
 	},
 	"require-dev": {
 		"coldtrick/sniffs": "dev-master",
 		"coldtrick/releases": "dev-master"
 	},
 	"conflict": {
-		"elgg/elgg": "<3.1"
+		"elgg/elgg": "<4.0"
 	},
 	"config": {
 		"fxp-asset": {

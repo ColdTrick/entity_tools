@@ -2,6 +2,8 @@
 
 namespace ColdTrick\EntityTools;
 
+use Elgg\Menu\MenuItems;
+
 class Menus {
 	
 	/**
@@ -9,7 +11,7 @@ class Menus {
 	 *
 	 * @param \Elgg\Hook $hook 'register', 'filter:entity_tools'
 	 *
-	 * @return void|\ElggMenuItem[]
+	 * @return void|MenuItems
 	 */
 	public static function registerFilter(\Elgg\Hook $hook) {
 		
@@ -46,9 +48,14 @@ class Menus {
 		$priority = 10;
 		
 		foreach ($types as $type) {
+			$key = "collection:object:{$type}";
+			if (!elgg_language_key_exists($key)) {
+				$key = "item:object:{$type}";
+			}
+			
 			$return[] = \ElggMenuItem::factory([
 				'name' => $type,
-				'text' => elgg_echo("item:object:{$type}"),
+				'text' => elgg_echo($key),
 				'href' => $generate_url($type),
 				'priority' => $priority,
 				'selected' => $type === $selected,
@@ -65,7 +72,7 @@ class Menus {
 	 *
 	 * @param \Elgg\Hook $hook 'register', 'menu:user_hover'
 	 *
-	 * @return void|\ElggMenuItem[]
+	 * @return void|MenuItems
 	 */
 	public static function registerUserHover(\Elgg\Hook $hook) {
 		
@@ -100,7 +107,7 @@ class Menus {
 	 *
 	 * @param \Elgg\Hook $hook 'register', 'menu:owner_block'
 	 *
-	 * @return void|\ElggMenuItem[]
+	 * @return void|MenuItems
 	 */
 	public static function registerOwnerBlock(\Elgg\Hook $hook) {
 		
@@ -150,7 +157,7 @@ class Menus {
 	 *
 	 * @param \Elgg\Hook $hook 'register', 'menu:page'
 	 *
-	 * @return void|\ElggMenuItem[]
+	 * @return void|MenuItems
 	 */
 	public static function registerAdmin(\Elgg\Hook $hook) {
 		
