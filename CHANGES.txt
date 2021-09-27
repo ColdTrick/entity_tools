@@ -1,6 +1,10 @@
 Version history
 ===============
 
+7.0 (2021-09-27):
+
+- changed: updated for Elgg 4.0
+
 6.1.1 (2021-01-05):
 
 - fixed: retain PUBLIC and LOGGED_IN access during content migration
