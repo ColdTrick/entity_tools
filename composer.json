@@ -14,8 +14,7 @@
 		"npm-asset/jquery-ui-timepicker-addon": "~1.6.3"
 	},
 	"require-dev": {
-		"coldtrick/sniffs": "dev-master",
-		"coldtrick/releases": "dev-master"
+		"coldtrick/sniffs": "dev-master"
 	},
 	"conflict": {
 		"elgg/elgg": "<4.0"
