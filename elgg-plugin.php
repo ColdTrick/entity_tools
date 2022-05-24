@@ -46,6 +46,7 @@ return [
 			'middleware' => [
 				Gatekeeper::class,
 			],
+			'detect_page_owner' => true,
 		],
 		'entity_tools:group' => [
 			'path' => 'entities/group/{guid}/{subtype?}',
@@ -53,6 +54,7 @@ return [
 			'middleware' => [
 				Gatekeeper::class,
 			],
+			'detect_page_owner' => true,
 		],
 	],
 	'settings' => [
