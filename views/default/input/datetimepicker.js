@@ -1,19 +1,16 @@
-define(['jquery', 'jqueryui-timepicker-addon/jquery-ui-timepicker-addon.min', 'jqueryui-timepicker-addon/jquery-ui-sliderAccess'], function ($) {
+define(['jquery', 'jquery-datetimepicker/jquery.datetimepicker.full.min'], function ($) {
 	
 	if ($('.elgg-input-datetime').length) {
 		$('.elgg-input-datetime').datetimepicker({
-			dateFormat: 'yy-mm-dd',
-			timeFormat: 'H:mm',
+			format: 'Y-m-d H:i',
+			step: 1,
 			maxDate: 0,
-			onSelect: function(dateText) {
-				
-				if ($(this).is('.elgg-input-timestamp')) {
-					var dt = new Date(dateText);
-					var timestamp = dt.getTime();
-					
+			onChangeDateTime: function (current_time, $input) {
+				if ($input.hasClass('elgg-input-timestamp')) {
+					var timestamp = current_time.getTime();
 					timestamp = timestamp / 1000;
-	
-					var id = $(this).attr('id');
+					
+					var id = $input.attr('id');
 					$('input[name="' + id + '"]').val(timestamp);
 				}
 			}

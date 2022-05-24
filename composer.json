@@ -11,7 +11,7 @@
 	},
 	"require": {
 		"composer/installers": "^1.0.8",
-		"npm-asset/jquery-ui-timepicker-addon": "~1.6.3"
+		"npm-asset/jquery-datetimepicker": "~2.5.21"
 	},
 	"require-dev": {
 		"coldtrick/sniffs": "dev-master"
@@ -22,6 +22,9 @@
 	"config": {
 		"fxp-asset": {
             "enabled": false
+		},
+		"allow-plugins": {
+			"composer/installers": true
 		}
 	},
 	"repositories": [

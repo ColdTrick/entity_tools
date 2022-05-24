@@ -60,9 +60,9 @@ return [
 	],
 	'views' => [
 		'default' => [
-			'jqueryui-timepicker-addon/' => $composer_path . 'vendor/npm-asset/jquery-ui-timepicker-addon/dist/',
-			'jqueryui/css/' => 'vendor/npm-asset/components-jqueryui/themes/base/',
-			'jquery-ui.js' => 'vendor/npm-asset/components-jqueryui/jquery-ui.min.js',
+			'jquery-datetimepicker/' => $composer_path . 'vendor/npm-asset/jquery-datetimepicker/build/',
+			'jquery-mousewheel.js' => $composer_path . 'vendor/npm-asset/jquery-mousewheel/jquery.mousewheel.js',
+			'php-date-formatter.js' => $composer_path . 'vendor/npm-asset/php-date-formatter/js/php-date-formatter.min.js',
 		],
 	],
 	'view_extensions' => [
