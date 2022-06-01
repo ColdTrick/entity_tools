@@ -11,7 +11,7 @@ if (is_dir(__DIR__ . '/vendor')) {
 
 return [
 	'plugin' => [
-		'version' => '7.0',
+		'version' => '7.1',
 	],
 	'actions' => [
 		'entity_tools/update_entities' => [],
