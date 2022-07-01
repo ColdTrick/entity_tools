@@ -18,7 +18,7 @@ return array (
   'entity_tools:menu:owner_block' => 'Content beheer',
   'entity_tools:page:owner:title' => 'Beheer %s\'s: %s',
   'entity_tools:forms:owner_listing:description' => 'Hier kun je een aantal attributen beheren van je content. De kolom Aangemaakt stelt je in staat de creatiedatum aan te passen. De kolom Eigenaar stelt je in staat om het item over te dragen aan een andere gebruiker. De laatste kolom (Groep / Gebruiker) verteld waar het item zich bevind, of in een groep of in je persoonlijke overzicht en stelt je in staat dit aan te passen.',
-  'entity_tools:forms:owner_listing:disclaimer' => 'Houdt er rekening mee dat als je content plaatst in een groep met een *, de huidige eigenaar geen lid is van die groep en dus niet meer bij het item kan.',
+  'entity_tools:forms:owner_listing:disclaimer' => 'Houd er rekening mee dat als je content plaatst in een groep met een *, de huidige eigenaar geen lid is van die groep en dus niet meer bij het item kan.',
   'entity_tools:settings:edit_access' => 'Wie kan de eigenschappen van de content aanpassen',
   'entity_tools:settings:edit_access:admin' => 'Alleen site beheerders',
   'entity_tools:settings:edit_access:user' => 'Alle gebruikers',
