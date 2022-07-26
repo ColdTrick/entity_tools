@@ -78,8 +78,8 @@ if ($add_users) {
 if ($add_groups) {
 	// build default group options
 	$group_options = [
-		'order_by_metadata' => [
-			'name' => 'name',
+		'sort_by' => [
+			'property' => 'name',
 			'direction' => 'ASC',
 		],
 		'limit' => false,
