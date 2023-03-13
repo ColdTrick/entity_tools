@@ -16,7 +16,7 @@ return [
 	'actions' => [
 		'entity_tools/update_entities' => [],
 	],
-	'hooks' => [
+	'events' => [
 		'register' => [
 			'menu:filter:entity_tools' => [
 				'\ColdTrick\EntityTools\Menus::registerFilter' => []
@@ -27,7 +27,7 @@ return [
 			'menu:owner_block' => [
 				'\ColdTrick\EntityTools\Menus::registerOwnerBlock' => []
 			],
-			'menu:page' => [
+			'menu:admin_header' => [
 				'\ColdTrick\EntityTools\Menus::registerAdmin' => []
 			],
 		],
@@ -65,11 +65,6 @@ return [
 			'jquery-datetimepicker/' => $composer_path . 'vendor/npm-asset/jquery-datetimepicker/build/',
 			'jquery-mousewheel.js' => $composer_path . 'vendor/npm-asset/jquery-mousewheel/jquery.mousewheel.js',
 			'php-date-formatter.js' => $composer_path . 'vendor/npm-asset/php-date-formatter/js/php-date-formatter.min.js',
-		],
-	],
-	'view_extensions' => [
-		'elgg.css' => [
-			'entity_tools/site.css' => [],
 		],
 	],
 ];

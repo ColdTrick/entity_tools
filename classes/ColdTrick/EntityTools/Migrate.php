@@ -2,6 +2,9 @@
 
 namespace ColdTrick\EntityTools;
 
+/**
+ * Base migrate class
+ */
 abstract class Migrate {
 	
 	/**
@@ -51,7 +54,7 @@ abstract class Migrate {
 	 *
 	 * @param int $new_time the new time_created
 	 *
-	 * @retrun void
+	 * @return void
 	 */
 	public function backDate($new_time) {
 		$this->object->time_created = $new_time;

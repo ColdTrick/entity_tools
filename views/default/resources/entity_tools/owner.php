@@ -20,7 +20,7 @@ if (!in_array($subtype, $supported_types)) {
 	throw new GatekeeperException(elgg_echo('entity_tools:error:unsupported_subtype', [$subtype]));
 }
 
-// breadcrumn
+// breadcrumb
 elgg_push_breadcrumb($page_owner->getDisplayName(), $page_owner->getURL());
 elgg_push_breadcrumb(elgg_echo('entity_tools:menu:owner_block'), elgg_generate_url('entity_tools:owner', [
 	'username' => $page_owner->username

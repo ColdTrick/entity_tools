@@ -1,5 +1,7 @@
 <?php
 
+elgg_require_css('forms/entity_tools/update_entities');
+
 $owner_guid = (int) elgg_extract('owner_guid', $vars);
 $container_guid = (int) elgg_extract('container_guid', $vars);
 $subtype = elgg_extract('subtype', $vars);
@@ -16,10 +18,7 @@ echo elgg_view('output/longtext', [
 ]);
 
 $offset = abs((int) elgg_extract('offset', $vars, get_input('offset', 0)));
-// because you can say $vars['limit'] = 0
-if (!$limit = (int) elgg_extract('limit', $vars, elgg_get_config('default_limit'))) {
-	$limit = 10;
-}
+$limit = (int) elgg_extract('limit', $vars, elgg_get_config('default_limit')) ?: 10;
 
 $entity_options = [
 	'type' => 'object',
@@ -66,12 +65,15 @@ if ($entities) {
 	if ($migrate->canBackDate()) {
 		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:created'));
 	}
+	
 	if ($migrate->canChangeOwner()) {
 		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:owner'));
 	}
+	
 	if ($migrate->canChangeContainer()) {
 		$row[] = elgg_format_element('th', [], elgg_echo('entity_tools:container'));
 	}
+	
 	$table_content .= elgg_format_element('thead', [], elgg_format_element('tr', [], implode(PHP_EOL, $row)));
 	
 	// content
@@ -79,6 +81,7 @@ if ($entities) {
 	foreach ($entities as $entity) {
 		$rows[] = elgg_view('entity_tools/listing/entity', ['entity' => $entity]);
 	}
+	
 	$table_content .= elgg_format_element('tbody', [], implode(PHP_EOL, $rows));
 	
 	// draw table
@@ -103,7 +106,6 @@ if ($entities) {
 	return;
 }
 
-// form footer
 $footer = elgg_view_field([
 	'#type' => 'submit',
 	'value' => elgg_echo('save'),

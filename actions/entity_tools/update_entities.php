@@ -17,6 +17,7 @@ $supported = entity_tools_get_supported_entity_types();
 if (!array_key_exists($subtype, $supported)) {
 	return elgg_error_response(elgg_echo('entity_tools:action:update_entities:error:input'));
 }
+
 $class = $supported[$subtype];
 
 foreach ($params as $guid => $options) {

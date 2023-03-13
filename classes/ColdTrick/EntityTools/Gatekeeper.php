@@ -9,6 +9,9 @@ use Elgg\Exceptions\Http\EntityPermissionsException;
 use Elgg\Request;
 use Elgg\Router\Middleware\Gatekeeper as ElggGatekeeper;
 
+/**
+ * Entity Tools gatekeeper
+ */
 class Gatekeeper extends ElggGatekeeper {
 	
 	/**
@@ -23,7 +26,7 @@ class Gatekeeper extends ElggGatekeeper {
 		
 		parent::__invoke($request);
 		
-		if ($request->elgg()->session->isAdminLoggedIn()) {
+		if (elgg_is_admin_logged_in()) {
 			// admins are always allowed
 			return;
 		}
@@ -41,6 +44,11 @@ class Gatekeeper extends ElggGatekeeper {
 				if (!$page_owner instanceof \ElggGroup) {
 					throw new GatekeeperException();
 				}
+				
+				if (!$page_owner->canEdit()) {
+					throw new EntityPermissionsException();
+				}
+				break;
 			case 'user':
 				if (!$page_owner->canEdit()) {
 					throw new EntityPermissionsException();

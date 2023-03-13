@@ -4,6 +4,9 @@ namespace ColdTrick\EntityTools\Migrate;
 
 use ColdTrick\EntityTools\Migrate;
 
+/**
+ * Migrate configuration for page entities
+ */
 class Pages extends Migrate {
 	
 	/**
@@ -116,7 +119,6 @@ class Pages extends Migrate {
 		
 		$subpages = $this->getOwnedSubPages($entity);
 		foreach ($subpages as $subpage) {
-			
 			$migrate = new static($subpage);
 			$migrate->changeOwner($new_owner_guid);
 			
@@ -148,9 +150,9 @@ class Pages extends Migrate {
 				],
 				'batch' => true,
 			]);
+			
 			/* @var $subpage \ElggPage */
 			foreach ($batch as $subpage) {
-				
 				if ($subpage->owner_guid === $old_owner_guid) {
 					$result[] = $subpage;
 				}
@@ -189,7 +191,6 @@ class Pages extends Migrate {
 			
 			/* @var $subpage \ElggPage */
 			foreach ($batch as $subpage) {
-				
 				$migrate = new static($subpage);
 				$migrate->changeContainer($new_container_guid);
 				

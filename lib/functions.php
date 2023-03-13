@@ -14,7 +14,7 @@ use ColdTrick\EntityTools\Migrate\Pages;
  *
  * @return array
  */
-function entity_tools_get_supported_entity_types() {
+function entity_tools_get_supported_entity_types(): array {
 	static $result;
 	
 	if (isset($result)) {
@@ -25,17 +25,20 @@ function entity_tools_get_supported_entity_types() {
 	if (elgg_is_active_plugin('blog')) {
 		$defaults['blog'] = Blog::class;
 	}
+	
 	if (elgg_is_active_plugin('discussions')) {
 		$defaults['discussion'] = Discussion::class;
 	}
+	
 	if (elgg_is_active_plugin('thewire')) {
 		$defaults['thewire'] = TheWire::class;
 	}
+	
 	if (elgg_is_active_plugin('pages')) {
 		$defaults['page'] = Pages::class;
 	}
 	
-	$result = elgg_trigger_plugin_hook('supported_types', 'entity_tools', [], $defaults);
+	$result = (array) elgg_trigger_event_results('supported_types', 'entity_tools', [], $defaults);
 	
 	// make sure we have valid classes
 	foreach ($result as $subtype => $class) {

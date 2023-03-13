@@ -4,6 +4,9 @@ namespace ColdTrick\EntityTools\Migrate;
 
 use ColdTrick\EntityTools\Migrate;
 
+/**
+ * Migrate configuration for discussion entities
+ */
 class Discussion extends Migrate {
 	
 	/**

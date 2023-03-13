@@ -30,6 +30,7 @@ if ($value) {
 		$value_timestamp = $dt->getTimestamp();
 		$value_date = date('Y-m-d H:i', $value_timestamp);
 	} catch (DataFormatException $ex) {
+		// ignore these exceptions
 	}
 }
 

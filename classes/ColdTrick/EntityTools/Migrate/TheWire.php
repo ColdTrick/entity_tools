@@ -4,6 +4,9 @@ namespace ColdTrick\EntityTools\Migrate;
 
 use ColdTrick\EntityTools\Migrate;
 
+/**
+ * Migrate configuration for thewire entities
+ */
 class TheWire extends Migrate {
 	
 	/**

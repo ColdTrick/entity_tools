@@ -4,16 +4,19 @@ namespace ColdTrick\EntityTools;
 
 use Elgg\Menu\MenuItems;
 
+/**
+ * Menu callbacks
+ */
 class Menus {
 	
 	/**
 	 * Add menu items to the filter menu
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'filter:entity_tools'
+	 * @param \Elgg\Event $event 'register', 'filter:entity_tools'
 	 *
 	 * @return void|MenuItems
 	 */
-	public static function registerFilter(\Elgg\Hook $hook) {
+	public static function registerFilter(\Elgg\Event $event) {
 		
 		$types = array_keys(entity_tools_get_supported_entity_types());
 		if (empty($types)) {
@@ -42,8 +45,8 @@ class Menus {
 			return false;
 		};
 		
-		$return = $hook->getValue();
-		$selected = $hook->getParam('filter_value');
+		$return = $event->getValue();
+		$selected = $event->getParam('filter_value');
 		
 		$priority = 10;
 		
@@ -70,22 +73,22 @@ class Menus {
 	/**
 	 * Add menu item to user hover menu (admin section)
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:user_hover'
+	 * @param \Elgg\Event $event 'register', 'menu:user_hover'
 	 *
 	 * @return void|MenuItems
 	 */
-	public static function registerUserHover(\Elgg\Hook $hook) {
+	public static function registerUserHover(\Elgg\Event $event) {
 		
 		if (!elgg_is_admin_logged_in()) {
 			return;
 		}
 		
-		$user = $hook->getEntityParam();
+		$user = $event->getEntityParam();
 		if (!$user instanceof \ElggUser) {
 			return;
 		}
 		
-		$return = $hook->getValue();
+		$return = $event->getValue();
 		
 		// add the admin menu
 		$return[] = \ElggMenuItem::factory([
@@ -105,20 +108,20 @@ class Menus {
 	/**
 	 * Add menu item to user owner block
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:owner_block'
+	 * @param \Elgg\Event $event 'register', 'menu:owner_block'
 	 *
 	 * @return void|MenuItems
 	 */
-	public static function registerOwnerBlock(\Elgg\Hook $hook) {
+	public static function registerOwnerBlock(\Elgg\Event $event) {
 		
 		$loggedin_user = elgg_get_logged_in_user_entity();
 		if (empty($loggedin_user)) {
 			return;
 		}
 		
-		$return = $hook->getValue();
+		$return = $event->getValue();
 		
-		$owner = $hook->getEntityParam();
+		$owner = $event->getEntityParam();
 		$access_setting = elgg_get_plugin_setting('edit_access', 'entity_tools');
 		if ($owner instanceof \ElggUser && ($access_setting === 'user')) {
 			// depending on the plugin setting a user can go to the edit page
@@ -155,24 +158,23 @@ class Menus {
 	/**
 	 * Add menu items to the admin page menu
 	 *
-	 * @param \Elgg\Hook $hook 'register', 'menu:page'
+	 * @param \Elgg\Event $event 'register', 'menu:admin_header'
 	 *
 	 * @return void|MenuItems
 	 */
-	public static function registerAdmin(\Elgg\Hook $hook) {
+	public static function registerAdmin(\Elgg\Event $event) {
 		
-		if (!elgg_is_admin_logged_in() || !elgg_in_context('admin')) {
+		if (!elgg_is_admin_logged_in()) {
 			return;
 		}
 		
-		$return = $hook->getValue();
+		$return = $event->getValue();
 		
 		$return[] = \ElggMenuItem::factory([
 			'name' => 'entity_tools',
 			'href' => elgg_generate_url('entity_tools:site'),
 			'text' => elgg_echo('entity_tools:menu:admin'),
 			'parent_name' => 'administer_utilities',
-			'section' => 'administer',
 		]);
 		
 		return $return;
