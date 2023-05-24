@@ -13,7 +13,7 @@ $row_data = [];
 
 $title = $entity->getDisplayName();
 if (empty($title)) {
-	$title = elgg_get_excerpt($entity->description, 100);
+	$title = elgg_get_excerpt((string) $entity->description, 100);
 }
 
 $row_data[] = elgg_format_element('td', [], elgg_view('output/url', [
