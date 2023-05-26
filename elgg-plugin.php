@@ -13,24 +13,11 @@ return [
 	'plugin' => [
 		'version' => '8.0',
 	],
+	'settings' => [
+		'edit_access' => 'admin',
+	],
 	'actions' => [
 		'entity_tools/update_entities' => [],
-	],
-	'events' => [
-		'register' => [
-			'menu:filter:entity_tools' => [
-				'\ColdTrick\EntityTools\Menus::registerFilter' => []
-			],
-			'menu:user_hover' => [
-				'\ColdTrick\EntityTools\Menus::registerUserHover' => []
-			],
-			'menu:owner_block' => [
-				'\ColdTrick\EntityTools\Menus::registerOwnerBlock' => []
-			],
-			'menu:admin_header' => [
-				'\ColdTrick\EntityTools\Menus::registerAdmin' => []
-			],
-		],
 	],
 	'routes' => [
 		'entity_tools:site' => [
@@ -57,8 +44,21 @@ return [
 			'detect_page_owner' => true,
 		],
 	],
-	'settings' => [
-		'edit_access' => 'admin',
+	'events' => [
+		'register' => [
+			'menu:admin_header' => [
+				'\ColdTrick\EntityTools\Menus\AdminHeader::register' => []
+			],
+			'menu:filter:entity_tools' => [
+				'\ColdTrick\EntityTools\Menus\Filter::registerEntityTools' => []
+			],
+			'menu:owner_block' => [
+				'\ColdTrick\EntityTools\Menus\OwnerBlock::register' => []
+			],
+			'menu:user_hover' => [
+				'\ColdTrick\EntityTools\Menus\UserHover::register' => []
+			],
+		],
 	],
 	'views' => [
 		'default' => [
