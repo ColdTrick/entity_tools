@@ -32,6 +32,7 @@ return [
 			'resource' => 'entity_tools/owner',
 			'middleware' => [
 				Gatekeeper::class,
+				\Elgg\Router\Middleware\UserPageOwnerGatekeeper::class,
 			],
 			'detect_page_owner' => true,
 		],
@@ -40,6 +41,7 @@ return [
 			'resource' => 'entity_tools/group',
 			'middleware' => [
 				Gatekeeper::class,
+				\Elgg\Router\Middleware\GroupPageOwnerGatekeeper::class,
 			],
 			'detect_page_owner' => true,
 		],

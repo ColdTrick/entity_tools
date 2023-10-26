@@ -28,7 +28,7 @@ class AdminHeader {
 			'name' => 'entity_tools',
 			'href' => elgg_generate_url('entity_tools:site'),
 			'text' => elgg_echo('entity_tools:menu:admin'),
-			'parent_name' => 'administer_utilities',
+			'parent_name' => 'utilities',
 		]);
 		
 		return $return;
