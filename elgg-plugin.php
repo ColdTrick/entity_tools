@@ -11,7 +11,7 @@ if (is_dir(__DIR__ . '/vendor')) {
 
 return [
 	'plugin' => [
-		'version' => '9.0.1',
+		'version' => '10.0',
 	],
 	'settings' => [
 		'edit_access' => 'admin',
