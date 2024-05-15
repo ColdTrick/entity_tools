@@ -4,7 +4,7 @@ use Elgg\Exceptions\DataFormatException;
 
 elgg_require_css('jquery-datetimepicker/jquery.datetimepicker.min.css');
 
-elgg_require_js('input/datetimepicker');
+elgg_import_esm('input/datetimepicker');
 
 $vars['class'] = elgg_extract_class($vars, ['elgg-input-datetime']);
 

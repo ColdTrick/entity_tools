@@ -17,23 +17,23 @@ class Blog extends Migrate {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canBackDate() {
+	public function canBackDate(): bool {
 		return true;
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canChangeOwner() {
+	public function canChangeOwner(): bool {
 		return true;
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canChangeContainer() {
+	public function canChangeContainer(): bool {
 		return true;
 	}
 }

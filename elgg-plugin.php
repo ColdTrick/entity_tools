@@ -25,6 +25,7 @@ return [
 			'resource' => 'entity_tools/site',
 			'middleware' => [
 				Gatekeeper::class,
+				\Elgg\Router\Middleware\AdminGatekeeper::class,
 			],
 		],
 		'entity_tools:owner' => [
@@ -32,7 +33,7 @@ return [
 			'resource' => 'entity_tools/owner',
 			'middleware' => [
 				Gatekeeper::class,
-				\Elgg\Router\Middleware\UserPageOwnerGatekeeper::class,
+				\Elgg\Router\Middleware\UserPageOwnerCanEditGatekeeper::class,
 			],
 			'detect_page_owner' => true,
 		],
@@ -41,7 +42,7 @@ return [
 			'resource' => 'entity_tools/group',
 			'middleware' => [
 				Gatekeeper::class,
-				\Elgg\Router\Middleware\GroupPageOwnerGatekeeper::class,
+				\Elgg\Router\Middleware\GroupPageOwnerCanEditGatekeeper::class,
 			],
 			'detect_page_owner' => true,
 		],

@@ -22,8 +22,7 @@ class Gatekeeper extends ElggGatekeeper {
 	 * @return void
 	 * @throws HttpException
 	 */
-	public function __invoke(Request $request) {
-		
+	public function __invoke(Request $request): void {
 		parent::__invoke($request);
 		
 		if (elgg_is_admin_logged_in()) {

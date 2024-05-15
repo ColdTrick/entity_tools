@@ -9,13 +9,13 @@
 	}
 	
 	.elgg-input-datetime,
-	.elgg-input-dropdown,
+	.elgg-input-select,
 	.elgg-user-picker {
 		width: 200px;
 		white-space: nowrap;
 	}
 
-	.elgg-user-picker-list {
+	.elgg-entity-picker-list {
 		.elgg-image {
 			display: none;
 		}

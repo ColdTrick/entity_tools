@@ -17,31 +17,30 @@ class Pages extends Migrate {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canBackDate() {
+	public function canBackDate(): bool {
 		return true;
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canChangeOwner() {
+	public function canChangeOwner(): bool {
 		return true;
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function canChangeContainer() {
+	public function canChangeContainer(): bool {
 		return true;
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function changeOwner($new_owner_guid) {
-		
+	public function changeOwner(int $new_owner_guid): void {
 		// do all the default stuff
 		parent::changeOwner($new_owner_guid);
 		
@@ -53,10 +52,9 @@ class Pages extends Migrate {
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function changeContainer($new_container_guid) {
-		
+	public function changeContainer(int $new_container_guid): void {
 		// do all the default stuff
 		parent::changeContainer($new_container_guid);
 		
@@ -69,10 +67,9 @@ class Pages extends Migrate {
 	 *
 	 * @return void
 	 */
-	protected function moveLastRevision() {
-		
+	protected function moveLastRevision(): void {
 		/* @var $entity \ElggPage */
-		$entity = $this->object;
+		$entity = $this->getObject();
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		
 		// get the last revision
@@ -106,13 +103,11 @@ class Pages extends Migrate {
 	 *
 	 * @return void
 	 */
-	protected function updateSubpagesOwnerGUID($new_owner_guid) {
-		
+	protected function updateSubpagesOwnerGUID(int $new_owner_guid): void {
 		/* @var $entity \ElggPage */
-		$entity = $this->object;
+		$entity = $this->getObject();
 		
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
-		$new_owner_guid = (int) $new_owner_guid;
 		if ($old_owner_guid === $new_owner_guid) {
 			return;
 		}
@@ -133,8 +128,7 @@ class Pages extends Migrate {
 	 *
 	 * @return \ElggPage[]
 	 */
-	protected function getOwnedSubPages(\ElggPage $entity) {
-		
+	protected function getOwnedSubPages(\ElggPage $entity): array {
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		
 		return elgg_call(ELGG_IGNORE_ACCESS, function() use ($entity, $old_owner_guid) {
@@ -175,7 +169,7 @@ class Pages extends Migrate {
 	 *
 	 * @return void
 	 */
-	protected function moveSubpages($new_container_guid) {
+	protected function moveSubpages(int $new_container_guid): void {
 		// ignore access for this part
 		elgg_call(ELGG_IGNORE_ACCESS, function() use ($new_container_guid) {
 			$batch = elgg_get_entities([

@@ -13,7 +13,7 @@
 		"npm-asset/jquery-datetimepicker": "~2.5.21"
 	},
 	"conflict": {
-		"elgg/elgg": "<5.1"
+		"elgg/elgg": "<6.0"
 	},
 	"config": {
 		"fxp-asset": {

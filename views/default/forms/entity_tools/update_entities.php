@@ -90,10 +90,8 @@ if ($entities) {
 		'class' => 'elgg-table mbm',
 	], $table_content);
 	
-	$entity_options['count'] = true;
-	$count = elgg_get_entities($entity_options);
 	echo elgg_view('navigation/pagination', [
-		'count' => $count,
+		'count' => elgg_count_entities($entity_options),
 		'offset' => $offset,
 		'limit' => $limit,
 	]);

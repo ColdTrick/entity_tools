@@ -8,24 +8,16 @@ namespace ColdTrick\EntityTools;
 abstract class Migrate {
 	
 	/**
-	 * @var \ElggObject the entity being migrated
-	 */
-	protected $object;
-	
-	/**
 	 * @var array some of the original attributes of the entity before being changed
 	 */
-	protected $original_attributes = [];
+	protected array $original_attributes = [];
 	
 	/**
 	 * Create a migration helper object
 	 *
 	 * @param \ElggObject $object the object to migrate
 	 */
-	public function __construct(\ElggObject $object) {
-		
-		$this->object = $object;
-		
+	public function __construct(protected \ElggObject $object) {
 		$this->original_attributes = [
 			'time_created' => $object->time_created,
 			'owner_guid' => $object->owner_guid,
@@ -34,11 +26,11 @@ abstract class Migrate {
 	}
 	
 	/**
-	 * Return the object used in the migrate
+	 * Return the object used in this migrate class
 	 *
 	 * @return \ElggObject
 	 */
-	public function getObject() {
+	public function getObject(): \ElggObject {
 		return $this->object;
 	}
 	
@@ -47,7 +39,7 @@ abstract class Migrate {
 	 *
 	 * @return bool
 	 */
-	abstract public function canBackDate();
+	abstract public function canBackDate(): bool;
 	
 	/**
 	 * Backdate the entity
@@ -56,7 +48,7 @@ abstract class Migrate {
 	 *
 	 * @return void
 	 */
-	public function backDate($new_time) {
+	public function backDate(int $new_time): void {
 		$this->object->time_created = $new_time;
 	}
 	
@@ -65,7 +57,7 @@ abstract class Migrate {
 	 *
 	 * @return bool
 	 */
-	abstract public function canChangeOwner();
+	abstract public function canChangeOwner(): bool;
 	
 	/**
 	 * Changed the owner_guid of the entity
@@ -74,8 +66,7 @@ abstract class Migrate {
 	 *
 	 * @return void
 	 */
-	public function changeOwner($new_owner_guid) {
-		
+	public function changeOwner(int $new_owner_guid): void {
 		if (!get_user($new_owner_guid)) {
 			return;
 		}
@@ -91,7 +82,7 @@ abstract class Migrate {
 	 *
 	 * @return bool
 	 */
-	abstract public function canChangeContainer();
+	abstract public function canChangeContainer(): bool;
 	
 	/**
 	 * Change the container_guid of the entity
@@ -100,8 +91,7 @@ abstract class Migrate {
 	 *
 	 * @return void
 	 */
-	public function changeContainer($new_container_guid) {
-		
+	public function changeContainer(int $new_container_guid): void {
 		$this->object->container_guid = $new_container_guid;
 		
 		// check access_id for the new container
@@ -113,10 +103,9 @@ abstract class Migrate {
 	 *
 	 * @return void
 	 */
-	public function updateAccessID() {
+	public function updateAccessID(): void {
 		// ignore access restrictions
 		elgg_call(ELGG_IGNORE_ACCESS, function() {
-			
 			$old_access_id = (int) $this->object->access_id;
 			$new_access_id = $old_access_id;
 			if (!in_array($new_access_id, [ACCESS_PUBLIC, ACCESS_LOGGED_IN, ACCESS_PRIVATE])) {
