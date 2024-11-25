@@ -8,6 +8,7 @@ use ColdTrick\EntityTools\Migrate\Blog;
 use ColdTrick\EntityTools\Migrate\Discussion;
 use ColdTrick\EntityTools\Migrate\TheWire;
 use ColdTrick\EntityTools\Migrate\Pages;
+use Psr\Log\LogLevel;
 
 /**
  * Get the currently supported type/subtypes
@@ -46,7 +47,7 @@ function entity_tools_get_supported_entity_types(): array {
 			continue;
 		}
 		
-		elgg_log("{$class} needs to implement " . Migrate::class, 'ERROR');
+		elgg_log("{$class} needs to implement " . Migrate::class, LogLevel::ERROR);
 		unset($result[$subtype]);
 	}
 	
