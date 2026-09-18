@@ -68,7 +68,7 @@ class Pages extends Migrate {
 	 * @return void
 	 */
 	protected function moveLastRevision(): void {
-		/* @var $entity \ElggPage */
+		/** @var \ElggPage $entity */
 		$entity = $this->getObject();
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
 		
@@ -82,7 +82,7 @@ class Pages extends Migrate {
 			return;
 		}
 		
-		/* @var $annotation \ElggAnnotation */
+		/** @var \ElggAnnotation $annotation */
 		$annotation = $annotations[0];
 		
 		// is the last revision owned by the old owner
@@ -104,7 +104,7 @@ class Pages extends Migrate {
 	 * @return void
 	 */
 	protected function updateSubpagesOwnerGUID(int $new_owner_guid): void {
-		/* @var $entity \ElggPage */
+		/** @var \ElggPage $entity */
 		$entity = $this->getObject();
 		
 		$old_owner_guid = (int) $this->original_attributes['owner_guid'];
@@ -145,7 +145,7 @@ class Pages extends Migrate {
 				'batch' => true,
 			]);
 			
-			/* @var $subpage \ElggPage */
+			/** @var \ElggPage $subpage */
 			foreach ($batch as $subpage) {
 				if ($subpage->owner_guid === $old_owner_guid) {
 					$result[] = $subpage;
@@ -183,7 +183,7 @@ class Pages extends Migrate {
 				'batch' => true,
 			]);
 			
-			/* @var $subpage \ElggPage */
+			/** @var \ElggPage $subpage */
 			foreach ($batch as $subpage) {
 				$migrate = new static($subpage);
 				$migrate->changeContainer($new_container_guid);

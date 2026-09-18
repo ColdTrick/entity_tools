@@ -42,7 +42,7 @@ class Filter {
 			]);
 		};
 		
-		/* @var $return MenuItems */
+		/** @var MenuItems $return */
 		$return = $event->getValue();
 		$selected = $event->getParam('filter_value');
 		

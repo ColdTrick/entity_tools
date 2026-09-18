@@ -2,7 +2,7 @@
 
 use Elgg\Exceptions\Http\GatekeeperException;
 
-/* @var $page_owner \ElggGroup */
+/** @var \ElggGroup $page_owner */
 $page_owner = elgg_get_page_owner_entity();
 
 $supported_types = array_keys(entity_tools_get_supported_entity_types());

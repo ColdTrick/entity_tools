@@ -22,7 +22,7 @@ class OwnerBlock {
 			return null;
 		}
 		
-		/* @var $return MenuItems */
+		/** @var MenuItems $return */
 		$return = $event->getValue();
 		
 		$owner = $event->getEntityParam();

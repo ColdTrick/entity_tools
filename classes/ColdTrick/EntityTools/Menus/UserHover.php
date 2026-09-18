@@ -26,7 +26,7 @@ class UserHover {
 			return null;
 		}
 		
-		/* @var $return MenuItems */
+		/** @var MenuItems $return */
 		$return = $event->getValue();
 		
 		// add the admin menu

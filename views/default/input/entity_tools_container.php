@@ -101,9 +101,9 @@ if ($add_groups) {
 		];
 		
 		$owner_groups = $owner->getGroups($group_options);
-		/* @var $group ElggGroup */
+		/** @var \ElggGroup $group */
 		foreach ($owner_groups as $group) {
-			// check if group not already proccessed
+			// check if group not already processed
 			if (in_array($group->guid, $temp_array)) {
 				continue;
 			}
@@ -132,7 +132,7 @@ if ($add_groups) {
 		];
 		
 		$user_groups = $user->getGroups($group_options);
-		/* @var $group ElggGroup */
+		/** @var \ElggGroup $group */
 		foreach ($user_groups as $group) {
 			if (in_array($group->guid, $temp_array)) {
 				continue;
